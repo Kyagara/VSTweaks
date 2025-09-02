@@ -1,0 +1,22 @@
+{
+    "ingredientPattern": "T,F",
+    "height": 1,
+    "width": 2,
+    "shapeless": true,
+    "ingredients": {
+        "T": {
+            "type": "item",
+            "code": "game:saw-*",
+            "isTool": true
+        },
+        "F": {
+            "type": "item",
+            "code": "game:firewood"
+        }
+    },
+    "output": {
+        "type": "item",
+        "code": "game:stick",
+        "quantity": 3
+    }
+}

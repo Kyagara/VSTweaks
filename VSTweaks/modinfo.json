@@ -1,0 +1,13 @@
+{
+    "type": "code",
+    "modid": "vstweaks",
+    "name": "VSTweaks",
+    "authors": [
+        "Kyagara"
+    ],
+    "description": "Storage sorting and other quality of life features.",
+    "version": "0.1.0",
+    "dependencies": {
+        "game": ""
+    }
+}
