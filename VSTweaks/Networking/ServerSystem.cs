@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
@@ -8,10 +9,7 @@ namespace VSTweaks.Networking
 {
     internal class ServerSystem : ModSystem
     {
-        public override bool ShouldLoad(EnumAppSide forSide)
-        {
-            return forSide == EnumAppSide.Server;
-        }
+        public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
         public override void StartServerSide(ICoreServerAPI api)
         {
@@ -21,13 +19,10 @@ namespace VSTweaks.Networking
 
         private static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage)
         {
-            var inventories = fromPlayer.InventoryManager.OpenedInventories;
+            var inventories = GetInventories(fromPlayer, networkMessage.inventoryID);
 
             foreach (var inventory in inventories)
             {
-                var inventoryID = inventory.InventoryID;
-                if (inventory == null || inventory.Empty || inventoryID.StartsWith("creative") || inventoryID.StartsWith("hotbar")) continue;
-
                 var initial = inventory.ToArray();
                 if (initial == null) continue;
 
@@ -51,42 +46,65 @@ namespace VSTweaks.Networking
                 {
                     if (visited[start]) continue;
 
-                    int current = start;
+                    ProcessCycle(inventory, destToSource, visited, start);
+                }
+            }
+        }
 
-                    if (destToSource[current] == current)
+        private static IEnumerable<IInventory> GetInventories(IPlayer player, string inventoryID)
+        {
+            if (string.IsNullOrEmpty(inventoryID))
+            {
+                return player?.InventoryManager?.OpenedInventories?
+                    .Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)
+                    ?? [];
+            }
+            else
+            {
+                var inv = player?.InventoryManager?.GetInventory(inventoryID);
+                return (inv != null && !inv.InventoryID.StartsWith("creative") && !inv.Empty)
+                    ? new[] { inv }
+                    : [];
+            }
+        }
+
+        private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start)
+        {
+            int len = destToSource.Length;
+            int current = start;
+
+            if (destToSource[current] == current)
+            {
+                visited[current] = true;
+                return;
+            }
+
+            while (!visited[current])
+            {
+                visited[current] = true;
+
+                int sourceIndex = destToSource[current];
+                if (sourceIndex == current) break;
+
+                var snapshot = inventory.ToArray();
+                if (snapshot == null) break;
+
+                var sourceSlot = snapshot[sourceIndex];
+
+                inventory.TryFlipItems(current, sourceSlot);
+
+                inventory.MarkSlotDirty(current);
+                inventory.MarkSlotDirty(sourceIndex);
+
+                for (int d = 0; d < len; d++)
+                {
+                    if (d != current && destToSource[d] == current)
                     {
-                        visited[current] = true;
-                        continue;
-                    }
-
-                    while (!visited[current])
-                    {
-                        visited[current] = true;
-
-                        int sourceIndex = destToSource[current];
-                        if (sourceIndex == current) break;
-
-                        var snapshot = inventory.ToArray();
-                        if (snapshot == null) break;
-
-                        var sourceSlot = snapshot[sourceIndex];
-
-                        inventory.TryFlipItems(current, sourceSlot);
-
-                        inventory.MarkSlotDirty(current);
-                        inventory.MarkSlotDirty(sourceIndex);
-
-                        for (int d = 0; d < len; d++)
-                        {
-                            if (d != current && destToSource[d] == current)
-                            {
-                                destToSource[d] = sourceIndex;
-                            }
-                        }
-
-                        current = sourceIndex;
+                        destToSource[d] = sourceIndex;
                     }
                 }
+
+                current = sourceIndex;
             }
         }
     }

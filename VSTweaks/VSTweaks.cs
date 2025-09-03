@@ -28,7 +28,7 @@ namespace VSTweaks
 
         private static bool OnSortKey(KeyCombination keyCombo)
         {
-            ClientSystem.SendSortPacket();
+            ClientSystem.Instance?.SendSortPacket();
             return true;
         }
     }
