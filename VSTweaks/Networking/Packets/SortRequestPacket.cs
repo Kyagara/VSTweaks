@@ -1,10 +1,8 @@
 using ProtoBuf;
 
-namespace VSTweaks.Networking.Packets
-{
+namespace VSTweaks.Networking.Packets {
     [ProtoContract]
-    internal class SortRequestPacket
-    {
+    internal class SortRequestPacket {
         [ProtoMember(1)]
         public string inventoryID;
     }

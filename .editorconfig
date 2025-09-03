@@ -1,0 +1,6 @@
+root = true
+
+[*.cs]
+trim_trailing_whitespace = true
+csharp_new_line_before_open_brace = none
+insert_final_newline = true

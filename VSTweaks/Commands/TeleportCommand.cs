@@ -1,12 +1,9 @@
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
-namespace VSTweaks.Commands
-{
-    internal static class TeleportCommand
-    {
-        public static void Register(ICoreServerAPI api)
-        {
+namespace VSTweaks.Commands {
+    internal static class TeleportCommand {
+        public static void Register(ICoreServerAPI api) {
             api.ChatCommands.Create("tpp")
                .WithDescription("Teleport yourself to a player.")
                .WithArgs(new OnlinePlayerArgParser("destination", api, true))
@@ -15,8 +12,7 @@ namespace VSTweaks.Commands
                .HandleWith(OnTeleportCommand);
         }
 
-        private static TextCommandResult OnTeleportCommand(TextCommandCallingArgs args)
-        {
+        private static TextCommandResult OnTeleportCommand(TextCommandCallingArgs args) {
             var destination = args.Parsers[0].GetValue() as IPlayer;
 
             args.Caller.Player.Entity.TeleportTo(destination.Entity.Pos);

@@ -14,18 +14,15 @@ using Vintagestory.API.Common;
 
 namespace CakeBuild;
 
-public static class Program
-{
-    public static int Main(string[] args)
-    {
+public static class Program {
+    public static int Main(string[] args) {
         return new CakeHost()
             .UseContext<BuildContext>()
             .Run(args);
     }
 }
 
-public class BuildContext : FrostingContext
-{
+public class BuildContext : FrostingContext {
     public const string ProjectName = "VSTweaks";
     public string BuildConfiguration { get; }
     public string Version { get; }
@@ -33,8 +30,7 @@ public class BuildContext : FrostingContext
     public bool SkipJsonValidation { get; }
 
     public BuildContext(ICakeContext context)
-        : base(context)
-    {
+        : base(context) {
         BuildConfiguration = context.Argument("configuration", "Release");
         SkipJsonValidation = context.Argument("skipJsonValidation", false);
         var modInfo = context.DeserializeJsonFromFile<ModInfo>($"../{ProjectName}/modinfo.json");
@@ -44,24 +40,18 @@ public class BuildContext : FrostingContext
 }
 
 [TaskName("ValidateJson")]
-public sealed class ValidateJsonTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
-        if (context.SkipJsonValidation)
-        {
+public sealed class ValidateJsonTask : FrostingTask<BuildContext> {
+    public override void Run(BuildContext context) {
+        if (context.SkipJsonValidation) {
             return;
         }
         var jsonFiles = context.GetFiles($"../{BuildContext.ProjectName}/assets/**/*.json");
-        foreach (var file in jsonFiles)
-        {
-            try
-            {
+        foreach (var file in jsonFiles) {
+            try {
                 var json = File.ReadAllText(file.FullPath);
                 JToken.Parse(json);
             }
-            catch (JsonException ex)
-            {
+            catch (JsonException ex) {
                 throw new Exception($"Validation failed for JSON file: {file.FullPath}{Environment.NewLine}{ex.Message}", ex);
             }
         }
@@ -70,20 +60,16 @@ public sealed class ValidateJsonTask : FrostingTask<BuildContext>
 
 [TaskName("Build")]
 [IsDependentOn(typeof(ValidateJsonTask))]
-public sealed class BuildTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
+public sealed class BuildTask : FrostingTask<BuildContext> {
+    public override void Run(BuildContext context) {
         context.DotNetClean($"../{BuildContext.ProjectName}/{BuildContext.ProjectName}.csproj",
-            new DotNetCleanSettings
-            {
+            new DotNetCleanSettings {
                 Configuration = context.BuildConfiguration
             });
 
 
         context.DotNetPublish($"../{BuildContext.ProjectName}/{BuildContext.ProjectName}.csproj",
-            new DotNetPublishSettings
-            {
+            new DotNetPublishSettings {
                 Configuration = context.BuildConfiguration
             });
     }
@@ -91,21 +77,17 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 
 [TaskName("Package")]
 [IsDependentOn(typeof(BuildTask))]
-public sealed class PackageTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
+public sealed class PackageTask : FrostingTask<BuildContext> {
+    public override void Run(BuildContext context) {
         context.EnsureDirectoryExists("../Releases");
         context.CleanDirectory("../Releases");
         context.EnsureDirectoryExists($"../Releases/{context.Name}");
         context.CopyFiles($"../{BuildContext.ProjectName}/bin/{context.BuildConfiguration}/Mods/mod/publish/*", $"../Releases/{context.Name}");
-        if (context.DirectoryExists($"../{BuildContext.ProjectName}/assets"))
-        {
+        if (context.DirectoryExists($"../{BuildContext.ProjectName}/assets")) {
             context.CopyDirectory($"../{BuildContext.ProjectName}/assets", $"../Releases/{context.Name}/assets");
         }
         context.CopyFile($"../{BuildContext.ProjectName}/modinfo.json", $"../Releases/{context.Name}/modinfo.json");
-        if (context.FileExists($"../{BuildContext.ProjectName}/modicon.png"))
-        {
+        if (context.FileExists($"../{BuildContext.ProjectName}/modicon.png")) {
             context.CopyFile($"../{BuildContext.ProjectName}/modicon.png", $"../Releases/{context.Name}/modicon.png");
         }
         context.Zip($"../Releases/{context.Name}", $"../Releases/{context.Name}_{context.Version}.zip");
@@ -114,6 +96,5 @@ public sealed class PackageTask : FrostingTask<BuildContext>
 
 [TaskName("Default")]
 [IsDependentOn(typeof(PackageTask))]
-public class DefaultTask : FrostingTask
-{
+public class DefaultTask : FrostingTask {
 }

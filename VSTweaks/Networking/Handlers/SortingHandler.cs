@@ -4,16 +4,12 @@ using System.Linq;
 using Vintagestory.API.Common;
 using VSTweaks.Networking.Packets;
 
-namespace VSTweaks.Networking.Handlers
-{
-    internal static class SortingHandler
-    {
-        public static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage)
-        {
+namespace VSTweaks.Networking.Handlers {
+    internal static class SortingHandler {
+        public static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage) {
             var inventories = GetInventories(fromPlayer, networkMessage.inventoryID);
 
-            foreach (var inventory in inventories)
-            {
+            foreach (var inventory in inventories) {
                 var initial = inventory.ToArray();
                 if (initial == null) continue;
 
@@ -26,15 +22,13 @@ namespace VSTweaks.Networking.Handlers
                 int len = ordered.Length;
                 var destToSource = new int[len];
 
-                for (int dest = 0; dest < len; dest++)
-                {
+                for (int dest = 0; dest < len; dest++) {
                     destToSource[dest] = ordered[dest].originalIndex;
                 }
 
                 var visited = new bool[len];
 
-                for (int start = 0; start < len; start++)
-                {
+                for (int start = 0; start < len; start++) {
                     if (visited[start]) continue;
 
                     ProcessCycle(inventory, destToSource, visited, start);
@@ -42,16 +36,13 @@ namespace VSTweaks.Networking.Handlers
             }
         }
 
-        private static IEnumerable<IInventory> GetInventories(IPlayer player, string inventoryID)
-        {
-            if (string.IsNullOrEmpty(inventoryID))
-            {
+        private static IEnumerable<IInventory> GetInventories(IPlayer player, string inventoryID) {
+            if (string.IsNullOrEmpty(inventoryID)) {
                 return player?.InventoryManager?.OpenedInventories?
                     .Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)
                     ?? [];
             }
-            else
-            {
+            else {
                 var inv = player?.InventoryManager?.GetInventory(inventoryID);
                 return (inv != null && !inv.InventoryID.StartsWith("creative") && !inv.Empty)
                     ? new[] { inv }
@@ -59,19 +50,16 @@ namespace VSTweaks.Networking.Handlers
             }
         }
 
-        private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start)
-        {
+        private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start) {
             int len = destToSource.Length;
             int current = start;
 
-            if (destToSource[current] == current)
-            {
+            if (destToSource[current] == current) {
                 visited[current] = true;
                 return;
             }
 
-            while (!visited[current])
-            {
+            while (!visited[current]) {
                 visited[current] = true;
 
                 int sourceIndex = destToSource[current];
@@ -87,10 +75,8 @@ namespace VSTweaks.Networking.Handlers
                 inventory.MarkSlotDirty(current);
                 inventory.MarkSlotDirty(sourceIndex);
 
-                for (int d = 0; d < len; d++)
-                {
-                    if (d != current && destToSource[d] == current)
-                    {
+                for (int d = 0; d < len; d++) {
+                    if (d != current && destToSource[d] == current) {
                         destToSource[d] = sourceIndex;
                     }
                 }
