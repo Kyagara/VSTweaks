@@ -3,9 +3,9 @@ using Vintagestory.API.Server;
 
 namespace VSTweaks.Commands
 {
-    internal static class SetupCommands
+    internal static class TeleportCommand
     {
-        public static void RegisterServerCommands(ICoreServerAPI api)
+        public static void Register(ICoreServerAPI api)
         {
             api.ChatCommands.Create("tpp")
                .WithDescription("Teleport yourself to a player.")

@@ -19,6 +19,7 @@ namespace VSTweaks.Networking
             clientChannel = api.Network.GetChannel(Mod.Info.ModID + ".sort_channel");
         }
 
+        // Should be moved to the SortingHandler.
         public void SendSortPacket()
         {
             // The player is not hovering any particular storage,
