@@ -1,11 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers {
-    internal static class SortingHandler {
+    internal sealed class SortingHandler {
+        private ICoreClientAPI _clientAPI;
+        private IClientNetworkChannel _clientChannel;
+
+        private SortingHandler() { }
+        private static readonly Lazy<SortingHandler> _lazy = new(() => new SortingHandler());
+        public static SortingHandler Instance => _lazy.Value;
+
+        public void InitializeClient(ICoreClientAPI api, string modID) {
+            _clientAPI = api;
+            _clientChannel = api.Network.GetChannel(modID + ".sort_channel");
+        }
+
+        public bool C2SSendSortPacket(KeyCombination _keyCombo) {
+            // The player is not hovering any particular storage,
+            // don't send inventoryID so the server sorts every open storage
+            if (_clientAPI?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
+                _clientChannel.SendPacket(new SortRequestPacket() { inventoryID = "" });
+                return true;
+            }
+
+            var inventory = _clientAPI.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
+            var id = inventory.InventoryID;
+
+            if (id.StartsWith("creative") || inventory.Empty) return false;
+
+            _clientChannel.SendPacket(new SortRequestPacket() { inventoryID = id });
+            return true;
+        }
+
         public static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage) {
             var inventories = GetInventories(fromPlayer, networkMessage.inventoryID);
 
