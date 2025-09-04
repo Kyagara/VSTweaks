@@ -52,7 +52,12 @@ namespace VSTweaks {
             MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
             ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);
 
+            EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
+
+            EnableSticksFromFirewoodRecipe = config["EnableSticksFromFirewoodRecipe"].AsBool(EnableSticksFromFirewoodRecipe);
+
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
+
             EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
         }
 
