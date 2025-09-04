@@ -10,7 +10,7 @@ namespace VSTweaks {
     public class VSTweaks : ModSystem {
         // Server and Client
         public override void Start(ICoreAPI api) {
-            ModConfig.Instance.Initialize(api);
+            ModConfig.Instance.Initialize(api, Mod.Logger);
 
             if (ModConfig.Instance.EnableSorting) {
                 api.Network.RegisterChannel(Mod.Info.ModID + ".sort_channel")
@@ -28,7 +28,7 @@ namespace VSTweaks {
             if (ModConfig.Instance.EnableZoom) {
                 ZoomHotkey.Instance.Initialize(api);
                 api.Input.RegisterHotKey("zoom_camera", "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
-                api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnGameTick, 1000 / 90);
+                api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnZoomHeld, 1000 / 90);
             }
         }
 

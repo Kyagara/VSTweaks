@@ -21,10 +21,10 @@ namespace VSTweaks.Hotkeys {
 
         public void Initialize(ICoreClientAPI api) {
             clientAPI = api;
-            api.Event.RegisterGameTickListener(OnGameTick, 1000 / 90);
+            api.Event.RegisterGameTickListener(OnZoomHeld, 1000 / 90);
         }
 
-        public void OnGameTick(float dt) {
+        public void OnZoomHeld(float dt) {
             var hotkey = clientAPI.Input.GetHotKeyByCode(HOTKEY_CODE);
             bool isHotKeyPressed = clientAPI.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
 
@@ -35,13 +35,25 @@ namespace VSTweaks.Hotkeys {
                     isZooming = true;
                 }
 
-                zoomState = Math.Min(1, zoomState + dt / 0.2F);
+
+                if (ModConfig.Instance.ZoomLerp)
+                    zoomState = Math.Min(1, zoomState + dt / 0.2F);
+                else
+                    zoomState = 1;
+
+
                 UpdateSettings();
             }
             else if (!isHotKeyPressed && zoomState > 0) {
-                zoomState = Math.Max(0, zoomState - dt / 0.1F);
+                if (ModConfig.Instance.ZoomLerp) {
+                    zoomState = Math.Max(0, zoomState - dt / 0.1F);
 
-                if (zoomState.Equals(0)) {
+                    if (zoomState.Equals(0)) {
+                        isZooming = false;
+                    }
+                }
+                else {
+                    zoomState = 0;
                     isZooming = false;
                 }
 
