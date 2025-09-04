@@ -17,8 +17,8 @@
             },
             "preLaunchTask": "build",
             "args": [
-                // "--playStyle" , "preset-surviveandbuild",
-                // "--openWorld" , "modding test world",
+                "-pcreativebuilding",
+                "-oTestWorld",
                 "--tracelog",
                 "--addModPath",
                 "${workspaceFolder}/VSTweaks/bin/Debug/Mods",
@@ -44,8 +44,8 @@
                 "--tracelog",
                 "--addModPath",
                 "${workspaceFolder}/VSTweaks/bin/Debug/Mods",
-                 "--addOrigin",
-                 "${workspaceFolder}/VSTweaks/assets"
+                "--addOrigin",
+                "${workspaceFolder}/VSTweaks/assets"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

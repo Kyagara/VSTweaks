@@ -9,7 +9,7 @@ namespace VSTweaks {
 
         public bool EnableZoom { get; private set; } = true;
         // Lower values = zooms farther.
-        public int MaxZoom { get; private set; } = 25;
+        public int MaxZoom { get; private set; } = 20;
         // Enables a smooth 'transition' from current FOV to the zoomed FOV.
         public bool ZoomLerp { get; private set; } = true;
 
