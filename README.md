@@ -28,4 +28,7 @@ Default config:
 - Sort all open inventories or the one being hovered by pressing `R`.
 
 #### TODO
+- Share waypoints, maybe via a menu with a list of waypoints or by right clicking on a waypoint and clicking to share, maybe send a clickable text on chat so that other players can choose to add it to their waypoints.
+- Maybe an option to unlock exclusive recipes.
+- Maybe port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) (music selection, autowalk, increase/decrease zoom with mousewheel, sound on new chat message, send coords to chat) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks) (Discord bridging, link item in chat).
 - Maybe some linters/formatting?
