@@ -23,6 +23,21 @@ namespace VSTweaks {
             }
         }
 
+        public override void AssetsFinalize(ICoreAPI api) {
+            if (api.Side == EnumAppSide.Client) return;
+
+            if (!Config.Instance.EnableExclusiveCrafting) {
+                for (int i = 0; i < api.World.GridRecipes.Count; i++) {
+                    var recipe = api.World.GridRecipes[i];
+                    if (recipe == null || recipe.RequiresTrait == null) continue;
+
+                    // Very primitive, might cause issues with other mods.
+                    // For the class selection menu, the "Exclusive craftable x" will still display.
+                    api.World.GridRecipes[i].RequiresTrait = null;
+                }
+            }
+        }
+
         public override void StartClientSide(ICoreClientAPI api) {
             _clientAPI = api;
 

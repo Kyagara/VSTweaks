@@ -19,7 +19,8 @@ Default config:
   "EnableSorting": true,
   "EnableTPPCommand": true,
   "EnableNewChatMessageSound": true,
-  "EnableSticksFromFirewoodRecipe": true
+  "EnableSticksFromFirewoodRecipe": true,
+  "EnableExclusiveCrafting": false
 }
 ```
 
@@ -29,9 +30,9 @@ Default config:
 - Zoom with `Z`.
 - Sort all open inventories or the one being hovered by pressing `R`.
 - Sound on new chat messages.
+- Disable exclusive crafting (Sewing kit and clothing from Tailor, Sling from malefactor and so on).
 
 #### TODO
 - Share waypoints, maybe via a menu with a list of waypoints or by right clicking on a waypoint and clicking to share, maybe send a clickable text on chat so that other players can choose to add it to their waypoints.
-- Maybe an option to unlock exclusive recipes.
 - Maybe port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) (music selection, autowalk, increase/decrease zoom with mousewheel, send coords to chat) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks) (Discord bridging, link item in chat).
 - Maybe some linters/formatting?

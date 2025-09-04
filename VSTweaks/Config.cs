@@ -17,6 +17,8 @@ namespace VSTweaks {
 
         public bool EnableNewChatMessageSound { get; private set; } = true;
 
+        public bool EnableExclusiveCrafting { get; private set; } = false;
+
         public bool EnableSorting { get; private set; } = true;
 
         public bool EnableTPPCommand { get; private set; } = true;
