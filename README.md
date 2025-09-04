@@ -7,10 +7,10 @@ Features can be configured after running the game once and will be stored in the
 
 Default config:
 
-```json
+```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": <int>,
+  "Version": 1,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
