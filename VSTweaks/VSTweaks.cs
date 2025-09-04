@@ -5,37 +5,56 @@ using VSTweaks.Networking.Packets;
 using VSTweaks.Commands;
 using VSTweaks.Hotkeys;
 using VSTweaks.Networking.Handlers;
+using VSTweaks.Recipes;
 
 namespace VSTweaks {
     public class VSTweaks : ModSystem {
+        public const string SortChannelName = "vstweaks.sort_channel";
+
+        private ICoreClientAPI _clientAPI;
+
         // Server and Client
         public override void Start(ICoreAPI api) {
-            ModConfig.Instance.Initialize(api, Mod.Logger);
+            Config.Instance.Initialize(api, Mod.Logger);
 
-            if (ModConfig.Instance.EnableSorting) {
-                api.Network.RegisterChannel(Mod.Info.ModID + ".sort_channel")
+            if (Config.Instance.EnableSorting) {
+                api.Network.RegisterChannel(SortChannelName)
                     .RegisterMessageType<SortRequestPacket>();
             }
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
-            if (ModConfig.Instance.EnableSorting) {
-                SortingHandler.Instance.InitializeClient(api, Mod.Info.ModID);
+            _clientAPI = api;
+
+            if (Config.Instance.EnableSorting) {
+                SortingHandler.Instance.InitializeClient(api);
                 api.Input.RegisterHotKey("sort_inventories", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
                 api.Input.SetHotKeyHandler("sort_inventories", SortingHandler.Instance.C2SSendSortPacket);
             }
 
-            if (ModConfig.Instance.EnableZoom) {
+            if (Config.Instance.EnableZoom) {
                 ZoomHotkey.Instance.Initialize(api);
                 api.Input.RegisterHotKey("zoom_camera", "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
                 api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnZoomHeld, 1000 / 90);
             }
+
+            if (Config.Instance.EnableNewChatMessageSound) {
+                api.Event.ChatMessage += PlaySoundOnChatMessage;
+            }
         }
 
         public override void StartServerSide(ICoreServerAPI api) {
-            if (ModConfig.Instance.EnableTPPCommand) {
+            if (Config.Instance.EnableTPPCommand) {
                 TeleportCommand.Register(api);
             }
+
+            if (Config.Instance.EnableSticksFromFirewoodRecipe) {
+                api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
+            }
+        }
+
+        private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
+            _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: 0.2F);
         }
     }
 }

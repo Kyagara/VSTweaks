@@ -17,7 +17,7 @@ namespace VSTweaks.Commands {
 
             args.Caller.Player.Entity.TeleportTo(destination.Entity.Pos);
 
-            return TextCommandResult.Success("Teleported to " + destination.PlayerName);
+            return TextCommandResult.Success($"Teleported to {destination.PlayerName}");
         }
     }
 }

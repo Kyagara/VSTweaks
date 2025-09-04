@@ -3,9 +3,9 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
 namespace VSTweaks {
-    public class ModConfig {
+    public class Config {
         // First config release (v0.2.0) had no Version field.
-        public int Version { get; private set; } = 1;
+        public int Version { get; private set; } = 2;
 
         public bool EnableZoom { get; private set; } = true;
         // Lower values = zooms farther.
@@ -13,13 +13,17 @@ namespace VSTweaks {
         // Enables a smooth 'transition' from current FOV to the zoomed FOV.
         public bool ZoomLerp { get; private set; } = true;
 
+        public bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
+
+        public bool EnableNewChatMessageSound { get; private set; } = true;
+
         public bool EnableSorting { get; private set; } = true;
 
         public bool EnableTPPCommand { get; private set; } = true;
 
-        private ModConfig() { }
-        private static readonly Lazy<ModConfig> _lazy = new(() => new ModConfig());
-        public static ModConfig Instance => _lazy.Value;
+        private Config() { }
+        private static readonly Lazy<Config> _lazy = new(() => new Config());
+        public static Config Instance => _lazy.Value;
 
         public void Initialize(ICoreAPI api, ILogger logger) {
             var currentVersion = Version;

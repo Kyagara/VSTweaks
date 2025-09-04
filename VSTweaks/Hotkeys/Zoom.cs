@@ -36,7 +36,7 @@ namespace VSTweaks.Hotkeys {
                 }
 
 
-                if (ModConfig.Instance.ZoomLerp)
+                if (Config.Instance.ZoomLerp)
                     zoomState = Math.Min(1, zoomState + dt / 0.2F);
                 else
                     zoomState = 1;
@@ -45,7 +45,7 @@ namespace VSTweaks.Hotkeys {
                 UpdateSettings();
             }
             else if (!isHotKeyPressed && zoomState > 0) {
-                if (ModConfig.Instance.ZoomLerp) {
+                if (Config.Instance.ZoomLerp) {
                     zoomState = Math.Max(0, zoomState - dt / 0.1F);
 
                     if (zoomState.Equals(0)) {
@@ -62,7 +62,7 @@ namespace VSTweaks.Hotkeys {
         }
 
         private void UpdateSettings() {
-            clientAPI.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, ModConfig.Instance.MaxZoom, zoomState);
+            clientAPI.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, Config.Instance.MaxZoom, zoomState);
             clientAPI.Settings.Int[MOUSE_SENSITIVITY_SETTING] = Lerp(originalSensitivity, originalSensitivity * 0.5F, zoomState);
         }
 

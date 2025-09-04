@@ -14,9 +14,9 @@ namespace VSTweaks.Networking.Handlers {
         private static readonly Lazy<SortingHandler> _lazy = new(() => new SortingHandler());
         public static SortingHandler Instance => _lazy.Value;
 
-        public void InitializeClient(ICoreClientAPI api, string modID) {
+        public void InitializeClient(ICoreClientAPI api) {
             _clientAPI = api;
-            _clientChannel = api.Network.GetChannel(modID + ".sort_channel");
+            _clientChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
         }
 
         public bool C2SSendSortPacket(KeyCombination _keyCombo) {
