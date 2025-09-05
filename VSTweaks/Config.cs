@@ -5,7 +5,7 @@ using Vintagestory.API.Datastructures;
 namespace VSTweaks {
     public class Config {
         // First config release (v0.2.0) had no Version field.
-        public int Version { get; private set; } = 2;
+        public int Version { get; private set; } = 3;
 
         public bool EnableZoom { get; private set; } = true;
         // Lower values = zooms farther.
@@ -16,6 +16,7 @@ namespace VSTweaks {
         public bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
 
         public bool EnableNewChatMessageSound { get; private set; } = true;
+        public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
         public bool EnableExclusiveCrafting { get; private set; } = false;
 
@@ -54,9 +55,12 @@ namespace VSTweaks {
             MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
             ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);
 
-            EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
-
             EnableSticksFromFirewoodRecipe = config["EnableSticksFromFirewoodRecipe"].AsBool(EnableSticksFromFirewoodRecipe);
+
+            EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
+            ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
+
+            EnableExclusiveCrafting = config["EnableExclusiveCrafting"].AsBool(EnableExclusiveCrafting);
 
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
 

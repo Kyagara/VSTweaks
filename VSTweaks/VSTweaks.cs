@@ -31,8 +31,7 @@ namespace VSTweaks {
                     var recipe = api.World.GridRecipes[i];
                     if (recipe == null || recipe.RequiresTrait == null) continue;
 
-                    // Very primitive, might cause issues with other mods.
-                    // For the class selection menu, the "Exclusive craftable x" will still display.
+                    // Very primitive, might cause balancing issues with other mods.
                     api.World.GridRecipes[i].RequiresTrait = null;
                 }
             }
@@ -69,7 +68,7 @@ namespace VSTweaks {
         }
 
         private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
-            _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: 0.3F);
+            _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
         }
     }
 }

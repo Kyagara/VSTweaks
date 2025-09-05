@@ -16,11 +16,12 @@ Default config:
   "MaxZoom": 20,
   // Enables a smooth 'transition' from current FOV to the zoomed FOV.
   "ZoomLerp": true,
-  "EnableSorting": true,
-  "EnableTPPCommand": true,
-  "EnableNewChatMessageSound": true,
   "EnableSticksFromFirewoodRecipe": true,
-  "EnableExclusiveCrafting": false
+  "EnableNewChatMessageSound": true,
+  "ChatMessageSoundVolume": 0.3,
+  "EnableExclusiveCrafting": false,
+  "EnableSorting": true,
+  "EnableTPPCommand": true
 }
 ```
 
@@ -36,3 +37,6 @@ Default config:
 - Share waypoints, maybe via a menu with a list of waypoints or by right clicking on a waypoint and clicking to share, maybe send a clickable text on chat so that other players can choose to add it to their waypoints.
 - Maybe port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) (music selection, autowalk, increase/decrease zoom with mousewheel, send coords to chat) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks) (Discord bridging, link item in chat).
 - Maybe some linters/formatting?
+
+#### Known Issues
+- With exclusive crating disabled, the class selection menu will still display a "Exclusive craftable x" text.
