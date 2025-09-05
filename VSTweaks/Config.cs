@@ -29,8 +29,6 @@ namespace VSTweaks {
         public static Config Instance => _lazy.Value;
 
         public void Initialize(ICoreAPI api, ILogger logger) {
-            var currentVersion = Version;
-
             var config = api.LoadModConfig("vstweaks.json");
             if (config == null) {
                 logger.Log(EnumLogType.Warning, "Config file not found, generating a new one.");
@@ -39,14 +37,12 @@ namespace VSTweaks {
             }
 
             var fileVersion = config["Version"].AsInt();
-            if (fileVersion != currentVersion) {
-                logger.Log(EnumLogType.Warning, $"Config file has old version {fileVersion}, updating to version {currentVersion}.");
-                Version = currentVersion;
-                UpdateState(config);
-                Save(api);
+            if (fileVersion != Version) {
+                logger.Log(EnumLogType.Warning, $"Config file has old version {fileVersion}, updating to version {Version}.");
             }
 
             UpdateState(config);
+            Save(api);
         }
 
         private void UpdateState(JsonObject config) {
