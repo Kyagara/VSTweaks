@@ -26,7 +26,7 @@ namespace VSTweaks {
         public override void AssetsFinalize(ICoreAPI api) {
             if (api.Side == EnumAppSide.Client) return;
 
-            if (!Config.Instance.EnableExclusiveCrafting) {
+            if (Config.Instance.DisableExclusiveCrafting) {
                 for (int i = 0; i < api.World.GridRecipes.Count; i++) {
                     var recipe = api.World.GridRecipes[i];
                     if (recipe == null || recipe.RequiresTrait == null) continue;

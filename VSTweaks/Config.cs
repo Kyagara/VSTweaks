@@ -18,7 +18,7 @@ namespace VSTweaks {
         public bool EnableNewChatMessageSound { get; private set; } = true;
         public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
-        public bool EnableExclusiveCrafting { get; private set; } = false;
+        public bool DisableExclusiveCrafting { get; private set; } = true;
 
         public bool EnableSorting { get; private set; } = true;
 
@@ -41,6 +41,7 @@ namespace VSTweaks {
             var fileVersion = config["Version"].AsInt();
             if (fileVersion != currentVersion) {
                 logger.Log(EnumLogType.Warning, $"Config file has old version {fileVersion}, updating to version {currentVersion}.");
+                Version = currentVersion;
                 UpdateState(config);
                 Save(api);
             }
@@ -49,8 +50,6 @@ namespace VSTweaks {
         }
 
         private void UpdateState(JsonObject config) {
-            Version = config["Version"].AsInt(Version);
-
             EnableZoom = config["EnableZoom"].AsBool(EnableZoom);
             MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
             ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);
@@ -60,7 +59,7 @@ namespace VSTweaks {
             EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
             ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
 
-            EnableExclusiveCrafting = config["EnableExclusiveCrafting"].AsBool(EnableExclusiveCrafting);
+            DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
 
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
 

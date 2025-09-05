@@ -21,9 +21,7 @@
                 "-oTestWorld",
                 "--tracelog",
                 "--addModPath",
-                "${workspaceFolder}/VSTweaks/bin/Debug/Mods",
-                "--addOrigin",
-                "${workspaceFolder}/VSTweaks/assets"
+                "${workspaceFolder}/VSTweaks/bin/Debug/Mods"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -43,9 +41,7 @@
             "args": [
                 "--tracelog",
                 "--addModPath",
-                "${workspaceFolder}/VSTweaks/bin/Debug/Mods",
-                "--addOrigin",
-                "${workspaceFolder}/VSTweaks/assets"
+                "${workspaceFolder}/VSTweaks/bin/Debug/Mods"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

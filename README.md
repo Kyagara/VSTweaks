@@ -10,7 +10,7 @@ Default config:
 ```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": 1,
+  "Version": 3,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
@@ -19,7 +19,7 @@ Default config:
   "EnableSticksFromFirewoodRecipe": true,
   "EnableNewChatMessageSound": true,
   "ChatMessageSoundVolume": 0.3,
-  "EnableExclusiveCrafting": false,
+  "DisableExclusiveCrafting": true,
   "EnableSorting": true,
   "EnableTPPCommand": true
 }
