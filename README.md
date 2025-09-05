@@ -30,7 +30,7 @@ Default config:
 - Zoom with `Z`.
 - Sort all open inventories or the one being hovered by pressing `R`.
 - Sound on new chat messages.
-- Disable exclusive crafting (Sewing kit and clothing from Tailor, Sling from malefactor and so on).
+- Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
 
 #### TODO
 - Share waypoints, maybe via a menu with a list of waypoints or by right clicking on a waypoint and clicking to share, maybe send a clickable text on chat so that other players can choose to add it to their waypoints.

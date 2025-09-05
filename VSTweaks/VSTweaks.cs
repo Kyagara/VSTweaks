@@ -69,7 +69,7 @@ namespace VSTweaks {
         }
 
         private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
-            _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: 0.2F);
+            _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: 0.3F);
         }
     }
 }
