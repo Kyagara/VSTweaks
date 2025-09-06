@@ -10,7 +10,7 @@ using VSTweaks.Recipes;
 namespace VSTweaks {
     public class VSTweaks : ModSystem {
         public const string SortChannelName = "vstweaks.sort_channel";
-        public const string ZoomHotkeyID = "zoom_camera";
+        public const string ZoomHotKeyCode = "zoom_camera";
 
         private ICoreClientAPI _clientAPI;
 
@@ -49,7 +49,7 @@ namespace VSTweaks {
 
             if (Config.Instance.EnableZoom) {
                 ZoomHotkey.Instance.Initialize(api);
-                api.Input.RegisterHotKey(ZoomHotkeyID, "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
+                api.Input.RegisterHotKey(ZoomHotKeyCode, "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
                 api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnZoomHeld, 1000 / 90);
             }
 

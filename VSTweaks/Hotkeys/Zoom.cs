@@ -24,7 +24,7 @@ namespace VSTweaks.Hotkeys {
         }
 
         public void OnZoomHeld(float dt) {
-            var hotkey = clientAPI.Input.GetHotKeyByCode(VSTweaks.ZoomHotkeyID);
+            var hotkey = clientAPI.Input.GetHotKeyByCode(VSTweaks.ZoomHotKeyCode);
             var isHotKeyPressed = clientAPI.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
 
             if (isHotKeyPressed && zoomState < 1) {

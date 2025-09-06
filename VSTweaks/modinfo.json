@@ -5,7 +5,7 @@
     "authors": [
         "Kyagara"
     ],
-    "description": "Storage sorting, zoom, more recipes and other quality of life features.",
+    "description": "Storage sorting, zoom, recipes and other configurable quality of life features.",
     "version": "0.3.1",
     "dependencies": {
         "game": ""

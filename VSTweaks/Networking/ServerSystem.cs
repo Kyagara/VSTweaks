@@ -8,8 +8,10 @@ namespace VSTweaks.Networking {
         public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
         public override void StartServerSide(ICoreServerAPI api) {
-            api.Network.GetChannel(VSTweaks.SortChannelName)
-               .SetMessageHandler<SortRequestPacket>(SortingHandler.OnClientSortRequest);
+            if (Config.Instance.EnableSorting) {
+                api.Network.GetChannel(VSTweaks.SortChannelName)
+                   .SetMessageHandler<SortRequestPacket>(SortingHandler.OnClientSortRequest);
+            }
         }
     }
 }
