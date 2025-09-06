@@ -6,7 +6,7 @@
         "Kyagara"
     ],
     "description": "Storage sorting, zoom, recipes and other configurable quality of life features.",
-    "version": "0.3.1",
+    "version": "0.4.0",
     "dependencies": {
         "game": ""
     }

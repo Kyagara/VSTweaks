@@ -21,6 +21,7 @@ namespace VSTweaks {
         public bool DisableExclusiveCrafting { get; private set; } = true;
 
         public bool EnableSorting { get; private set; } = true;
+        public bool EnableSetSpawnOnSleep { get; private set; } = true;
 
         public bool EnableTPPCommand { get; private set; } = true;
         public string TPPCommandPerm { get; private set; } = "tp";
@@ -62,6 +63,7 @@ namespace VSTweaks {
             DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
 
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
+            EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
 
             EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
             TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);

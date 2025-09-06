@@ -6,6 +6,7 @@ using VSTweaks.Commands;
 using VSTweaks.Hotkeys;
 using VSTweaks.Networking.Handlers;
 using VSTweaks.Recipes;
+using HarmonyLib;
 
 namespace VSTweaks {
     public class VSTweaks : ModSystem {
@@ -14,6 +15,8 @@ namespace VSTweaks {
 
         private ICoreClientAPI _clientAPI;
 
+        private Harmony patcher;
+
         // Server and Client
         public override void Start(ICoreAPI api) {
             Config.Instance.Initialize(api, Mod.Logger);
@@ -21,6 +24,14 @@ namespace VSTweaks {
             if (Config.Instance.EnableSorting) {
                 api.Network.RegisterChannel(SortChannelName)
                     .RegisterMessageType<SortRequestPacket>();
+            }
+
+            if (!Harmony.HasAnyPatches(Mod.Info.ModID)) {
+                patcher = new Harmony(Mod.Info.ModID);
+
+                if (Config.Instance.EnableSetSpawnOnSleep) {
+                    patcher.PatchCategory($"{Mod.Info.ModID}.bed");
+                }
             }
         }
 
@@ -74,6 +85,10 @@ namespace VSTweaks {
 
         private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
             _clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
+        }
+
+        public override void Dispose() {
+            patcher?.UnpatchAll(Mod.Info.ModID);
         }
     }
 }
