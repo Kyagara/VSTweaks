@@ -4,7 +4,6 @@ using Vintagestory.API.Client;
 namespace VSTweaks.Hotkeys {
     // From https://github.com/chriswa/vsmod-ZoomButton
     internal sealed class ZoomHotkey {
-        private const string HOTKEY_CODE = "zoom_camera";
         private const string FIELD_OF_VIEW_SETTING = "fieldOfView";
         private const string MOUSE_SENSITIVITY_SETTING = "mouseSensivity";
 
@@ -25,8 +24,8 @@ namespace VSTweaks.Hotkeys {
         }
 
         public void OnZoomHeld(float dt) {
-            var hotkey = clientAPI.Input.GetHotKeyByCode(HOTKEY_CODE);
-            bool isHotKeyPressed = clientAPI.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
+            var hotkey = clientAPI.Input.GetHotKeyByCode(VSTweaks.ZoomHotkeyID);
+            var isHotKeyPressed = clientAPI.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
 
             if (isHotKeyPressed && zoomState < 1) {
                 if (!isZooming) {
@@ -35,12 +34,10 @@ namespace VSTweaks.Hotkeys {
                     isZooming = true;
                 }
 
-
                 if (Config.Instance.ZoomLerp)
                     zoomState = Math.Min(1, zoomState + dt / 0.2F);
                 else
                     zoomState = 1;
-
 
                 UpdateSettings();
             }

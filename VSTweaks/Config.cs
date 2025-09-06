@@ -5,7 +5,7 @@ using Vintagestory.API.Datastructures;
 namespace VSTweaks {
     public class Config {
         // First config release (v0.2.0) had no Version field.
-        public int Version { get; private set; } = 3;
+        public int Version { get; private set; } = 4;
 
         public bool EnableZoom { get; private set; } = true;
         // Lower values = zooms farther.
@@ -23,6 +23,10 @@ namespace VSTweaks {
         public bool EnableSorting { get; private set; } = true;
 
         public bool EnableTPPCommand { get; private set; } = true;
+        public string TPPCommandPerm { get; private set; } = "tp";
+
+        public bool EnableHomeCommand { get; private set; } = true;
+        public string HomeCommandPerm { get; private set; } = "chat";
 
         private Config() { }
         private static readonly Lazy<Config> _lazy = new(() => new Config());
@@ -60,6 +64,10 @@ namespace VSTweaks {
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
 
             EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
+            TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
+
+            EnableHomeCommand = config["EnableHomeCommand"].AsBool(EnableHomeCommand);
+            HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
         }
 
         private void Save(ICoreAPI api) {
