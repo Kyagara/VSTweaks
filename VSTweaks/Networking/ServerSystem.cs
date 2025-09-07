@@ -13,6 +13,11 @@ namespace VSTweaks.Networking {
 				api.Network.GetChannel(VSTweaks.SortChannelName)
 				   .SetMessageHandler<SortRequestPacket>(SortingHandler.OnClientSortRequest);
 			}
+
+			if (Config.Instance.EnableWaypointShare) {
+				api.Network.GetChannel(VSTweaks.ShareWaypointChannelName)
+				   .SetMessageHandler<ShareWaypointPacket>(ShareWaypointHandler.OnClientShareWaypoint);
+			}
 		}
 	}
 }

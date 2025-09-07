@@ -10,8 +10,9 @@ using HarmonyLib;
 
 namespace VSTweaks {
 	public class VSTweaks : ModSystem {
-		public const string SortChannelName = "vstweaks.sort_channel";
-		public const string ZoomHotKeyCode = "zoom_camera";
+		public const string ShareWaypointChannelName = "vstweaks.share_waypoint";
+		public const string SortChannelName = "vstweaks.sorting";
+		public const string ZoomHotKeyCode = "vstweaks.zoom_camera";
 
 		private ICoreClientAPI _clientAPI;
 
@@ -26,6 +27,11 @@ namespace VSTweaks {
 					.RegisterMessageType<SortRequestPacket>();
 			}
 
+			if (Config.Instance.EnableWaypointShare) {
+				api.Network.RegisterChannel(ShareWaypointChannelName)
+					.RegisterMessageType<ShareWaypointPacket>();
+			}
+
 			if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
 
 			patcher = new Harmony(Mod.Info.ModID);
@@ -34,7 +40,7 @@ namespace VSTweaks {
 				patcher.PatchCategory($"{Mod.Info.ModID}.bed");
 			}
 
-			if (Config.Instance.EnableClickTPWaypoint) {
+			if (Config.Instance.EnableWaypointClickTeleport || Config.Instance.EnableWaypointShare) {
 				patcher.PatchCategory($"{Mod.Info.ModID}.waypoint");
 			}
 		}
@@ -58,8 +64,8 @@ namespace VSTweaks {
 
 			if (Config.Instance.EnableSorting) {
 				SortingHandler.Instance.InitializeClient(api);
-				api.Input.RegisterHotKey("sort_inventories", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
-				api.Input.SetHotKeyHandler("sort_inventories", SortingHandler.Instance.C2SSendSortPacket);
+				api.Input.RegisterHotKey("vstweaks.sort_inventories", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
+				api.Input.SetHotKeyHandler("vstweaks.sort_inventories", SortingHandler.Instance.C2SSendSortPacket);
 			}
 
 			if (Config.Instance.EnableZoom) {
@@ -74,16 +80,20 @@ namespace VSTweaks {
 		}
 
 		public override void StartServerSide(ICoreServerAPI api) {
+			if (Config.Instance.EnableSticksFromFirewoodRecipe) {
+				api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
+			}
+
+			if (Config.Instance.EnableWaypointShare) {
+				ShareWaypointHandler.Initialize(api);
+			}
+
 			if (Config.Instance.EnableTPPCommand) {
 				TPPCommand.Register(api);
 			}
 
 			if (Config.Instance.EnableHomeCommand) {
 				HomeCommand.Register(api);
-			}
-
-			if (Config.Instance.EnableSticksFromFirewoodRecipe) {
-				api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
 			}
 		}
 

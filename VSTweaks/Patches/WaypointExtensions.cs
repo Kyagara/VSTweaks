@@ -2,7 +2,7 @@ using HarmonyLib;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 using Vintagestory.API.Client;
-using Vintagestory.API.MathTools;
+using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Patches {
 	[HarmonyPatchCategory("vstweaks.waypoint")]
@@ -19,7 +19,14 @@ namespace VSTweaks.Patches {
 
 			if (!___mouseOver) return;
 
-			BlockPos destination = ___waypoint.Position.AsBlockPos;
+			var destination = ___waypoint.Position.AsBlockPos;
+
+			if (Config.Instance.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
+				var channel = __instance.capi.Network.GetChannel(VSTweaks.ShareWaypointChannelName);
+				channel.SendPacket(new ShareWaypointPacket() { Pos = destination, Title = ___waypoint.Title });
+				return;
+			}
+
 			__instance.capi.SendChatMessage($"/tp ={destination.X} {destination.Y} ={destination.Z}");
 		}
 	}

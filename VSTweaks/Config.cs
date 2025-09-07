@@ -6,7 +6,7 @@ using Vintagestory.API.Datastructures;
 namespace VSTweaks {
 	public class Config {
 		// First config release (v0.2.0) had no Version field.
-		public int Version { get; private set; } = 5;
+		public int Version { get; private set; } = 6;
 
 		public bool EnableZoom { get; private set; } = true;
 		// Lower values = zooms farther.
@@ -22,12 +22,13 @@ namespace VSTweaks {
 		public bool DisableExclusiveCrafting { get; private set; } = true;
 		public bool EnableSorting { get; private set; } = true;
 		public bool EnableSetSpawnOnSleep { get; private set; } = true;
-		public bool EnableClickTPWaypoint { get; private set; } = true;
+		public bool EnableWaypointClickTeleport { get; private set; } = true;
+		public bool EnableWaypointShare { get; private set; } = true;
 
 		public bool EnableTPPCommand { get; private set; } = true;
-		public string TPPCommandPerm { get; private set; } = "tp";
-
 		public bool EnableHomeCommand { get; private set; } = true;
+
+		public string TPPCommandPerm { get; private set; } = "tp";
 		public string HomeCommandPerm { get; private set; } = "chat";
 
 		private Config() { }
@@ -64,12 +65,13 @@ namespace VSTweaks {
 			DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
 			EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
 			EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
-			EnableClickTPWaypoint = config["EnableClickTPWaypoint"].AsBool(EnableClickTPWaypoint);
+			EnableWaypointClickTeleport = config["EnableWaypointClickTeleport"].AsBool(EnableWaypointClickTeleport);
+			EnableWaypointShare = config["EnableWaypointShare"].AsBool(EnableWaypointShare);
 
 			EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
-			TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
-
 			EnableHomeCommand = config["EnableHomeCommand"].AsBool(EnableHomeCommand);
+
+			TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
 			HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
 		}
 

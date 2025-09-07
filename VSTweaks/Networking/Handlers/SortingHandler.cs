@@ -25,7 +25,7 @@ namespace VSTweaks.Networking.Handlers {
 			// The player is not hovering any particular storage,
 			// don't send inventoryID so the server sorts every open storage
 			if (_clientAPI?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
-				_clientChannel.SendPacket(new SortRequestPacket() { inventoryID = "" });
+				_clientChannel.SendPacket(new SortRequestPacket() { InventoryID = "" });
 				return true;
 			}
 
@@ -34,12 +34,12 @@ namespace VSTweaks.Networking.Handlers {
 
 			if (id.StartsWith("creative") || inventory.Empty) return false;
 
-			_clientChannel.SendPacket(new SortRequestPacket() { inventoryID = id });
+			_clientChannel.SendPacket(new SortRequestPacket() { InventoryID = id });
 			return true;
 		}
 
 		public static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage) {
-			var inventories = GetInventories(fromPlayer, networkMessage.inventoryID);
+			var inventories = GetInventories(fromPlayer, networkMessage.InventoryID);
 
 			foreach (var inventory in inventories) {
 				var initial = inventory.ToArray();

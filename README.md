@@ -14,7 +14,7 @@ Feedback or bug reports are very much appreciated!
 - Zoom with `Z`.
 - Set spawn point when sleeping in a bed.
 - Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
-- Click on waypoint to teleport.
+- LMB on waypoint to teleport (requires `tp` permission), Ctrl+LMB to share it. WIP, lacks GUI, broadcasts to everyone.
 - Teleport to someone using `/tpp <player>` (by default requires `tp` permission).
 - Teleport to your spawn point using `/home` (by default requires `chat` permission).
 - Turn Firewood into 3 sticks using any saw.
@@ -31,7 +31,7 @@ Default config:
 ```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": 5,
+  "Version": 6,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
@@ -43,17 +43,19 @@ Default config:
   "DisableExclusiveCrafting": true,
   "EnableSorting": true,
   "EnableSetSpawnOnSleep": true,
-  "EnableClickTPWaypoint": true,
+  "EnableWaypointClickTeleport": true,
+  "EnableWaypointShare": true,
   "EnableTPPCommand": true,
-  "TPPCommandPerm": "tp",
   "EnableCommandCommand": true,
+  "TPPCommandPerm": "tp",
   "HomeCommandPerm": "chat"
 }
 ```
 
 #### TODO
 - "Trashcan", either a block, inventory slot or hotkey that you can press and delete items.
-- Share waypoints by right clicking on a waypoint and clicking to share, preferably send a clickable text on chat so that other players can choose to add it to their waypoints.
+- Implement sharing waypoint in the add/edit waypoint dialog.
+- Move waypoint teleport to server so we can check the users permission, this way the permission necessary to teleport is customizable.
 - Port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks). Some that might be useful are:
   - Music selection
   - Autowalk
@@ -62,7 +64,6 @@ Default config:
   - Discord bridging
   - Link item in chat (maybe also let people add descriptions to items)
 - For disabling exclusive recipes, maybe store a list of item names instead of looping all items.
-- Maybe some linters/formatting?
 
 #### Known Issues
 - With exclusive crafting disabled, the class selection menu will still display a "Exclusive craftable x" text.
