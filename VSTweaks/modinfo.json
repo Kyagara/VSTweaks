@@ -1,13 +1,13 @@
 {
-    "type": "code",
-    "modid": "vstweaks",
-    "name": "VSTweaks",
-    "authors": [
-        "Kyagara"
-    ],
-    "description": "Storage sorting, zoom, recipes and other configurable quality of life features.",
-    "version": "0.4.0",
-    "dependencies": {
-        "game": ""
-    }
+	"type": "code",
+	"modid": "vstweaks",
+	"name": "VSTweaks",
+	"authors": [
+		"Kyagara"
+	],
+	"description": "Storage sorting, zoom, recipes and other configurable quality of life features.",
+	"version": "0.4.0",
+	"dependencies": {
+		"game": ""
+	}
 }

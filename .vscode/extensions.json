@@ -1,8 +1,8 @@
 {
-    "recommendations": [
-        "EditorConfig.EditorConfig",
-        "SonarSource.sonarlint-vscode",
-        "ms-dotnettools.csdevkit",
-        "ms-dotnettools.csharp"
-    ]
+	"recommendations": [
+		"EditorConfig.EditorConfig",
+		"SonarSource.sonarlint-vscode",
+		"ms-dotnettools.csdevkit",
+		"ms-dotnettools.csharp"
+	]
 }
