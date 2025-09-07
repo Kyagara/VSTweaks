@@ -5,7 +5,7 @@ using Vintagestory.API.Datastructures;
 namespace VSTweaks {
     public class Config {
         // First config release (v0.2.0) had no Version field.
-        public int Version { get; private set; } = 4;
+        public int Version { get; private set; } = 5;
 
         public bool EnableZoom { get; private set; } = true;
         // Lower values = zooms farther.
@@ -19,9 +19,9 @@ namespace VSTweaks {
         public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
         public bool DisableExclusiveCrafting { get; private set; } = true;
-
         public bool EnableSorting { get; private set; } = true;
         public bool EnableSetSpawnOnSleep { get; private set; } = true;
+        public bool EnableClickTPWaypoint { get; private set; } = true;
 
         public bool EnableTPPCommand { get; private set; } = true;
         public string TPPCommandPerm { get; private set; } = "tp";
@@ -61,9 +61,9 @@ namespace VSTweaks {
             ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
 
             DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
-
             EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
             EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
+            EnableClickTPWaypoint = config["EnableClickTPWaypoint"].AsBool(EnableClickTPWaypoint);
 
             EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
             TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);

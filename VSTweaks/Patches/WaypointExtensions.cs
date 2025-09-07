@@ -12,8 +12,8 @@ namespace VSTweaks.Patches {
         public static void LeftClickWaypointTeleport(WaypointMapComponent __instance, MouseEvent args, Waypoint ___waypoint, bool ___mouseOver) {
             if (args.Button == EnumMouseButton.Right) return;
 
-            if (___waypoint.Position.Y == 1) {
-                __instance.capi.ShowChatMessage("The Y value of this waypoint is 1, unable to teleport.");
+            if (___waypoint.Position.Y.Equals(1)) {
+                __instance.capi.ShowChatMessage("The Y value of this waypoint is 1, unable to teleport. Remake the waypoint using '/waypoint add' standing in the desired location.");
                 return;
             }
 

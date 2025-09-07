@@ -26,13 +26,15 @@ namespace VSTweaks {
                     .RegisterMessageType<SortRequestPacket>();
             }
 
-            if (!Harmony.HasAnyPatches(Mod.Info.ModID)) {
-                patcher = new Harmony(Mod.Info.ModID);
+            if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
 
-                if (Config.Instance.EnableSetSpawnOnSleep) {
-                    patcher.PatchCategory($"{Mod.Info.ModID}.bed");
-                }
+            patcher = new Harmony(Mod.Info.ModID);
 
+            if (Config.Instance.EnableSetSpawnOnSleep) {
+                patcher.PatchCategory($"{Mod.Info.ModID}.bed");
+            }
+
+            if (Config.Instance.EnableClickTPWaypoint) {
                 patcher.PatchCategory($"{Mod.Info.ModID}.waypoint");
             }
         }

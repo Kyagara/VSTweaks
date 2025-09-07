@@ -14,6 +14,7 @@ Feedback or bug reports are very much appreciated!
 - Zoom with `Z`.
 - Set spawn point when sleeping in a bed.
 - Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
+- Click on waypoint to teleport.
 - Teleport to someone using `/tpp <player>` (by default requires `tp` permission).
 - Teleport to your spawn point using `/home` (by default requires `chat` permission).
 - Turn Firewood into 3 sticks using any saw.
@@ -30,7 +31,7 @@ Default config:
 ```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": 4,
+  "Version": 5,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
@@ -42,6 +43,7 @@ Default config:
   "DisableExclusiveCrafting": true,
   "EnableSorting": true,
   "EnableSetSpawnOnSleep": true,
+  "EnableClickTPWaypoint": true,
   "EnableTPPCommand": true,
   "TPPCommandPerm": "tp",
   "EnableCommandCommand": true,
