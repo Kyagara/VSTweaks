@@ -9,7 +9,7 @@ namespace VSTweaks.Patches {
     internal static class SetSpawnOnSleep {
         [HarmonyPostfix()]
         [HarmonyPatch(typeof(BlockEntityBed), "DidMount")]
-        public static void OnDidMount(BlockEntityBed __instance, EntityAgent entityAgent) {
+        public static void SetSpawnOnDidMount(BlockEntityBed __instance, EntityAgent entityAgent) {
             if (__instance.MountedBy != null && __instance.MountedBy == entityAgent) {
                 var api = entityAgent.Api;
                 if (api != null && api.Side == EnumAppSide.Server) {

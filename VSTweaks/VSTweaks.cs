@@ -32,6 +32,8 @@ namespace VSTweaks {
                 if (Config.Instance.EnableSetSpawnOnSleep) {
                     patcher.PatchCategory($"{Mod.Info.ModID}.bed");
                 }
+
+                patcher.PatchCategory($"{Mod.Info.ModID}.waypoint");
             }
         }
 
@@ -71,7 +73,7 @@ namespace VSTweaks {
 
         public override void StartServerSide(ICoreServerAPI api) {
             if (Config.Instance.EnableTPPCommand) {
-                TeleportCommand.Register(api);
+                TPPCommand.Register(api);
             }
 
             if (Config.Instance.EnableHomeCommand) {

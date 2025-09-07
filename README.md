@@ -12,11 +12,11 @@ Feedback or bug reports are very much appreciated!
 ### Features:
 - Sort all open inventories or the one being hovered by pressing `R`.
 - Zoom with `Z`.
+- Set spawn point when sleeping in a bed.
 - Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
 - Teleport to someone using `/tpp <player>` (by default requires `tp` permission).
 - Teleport to your spawn point using `/home` (by default requires `chat` permission).
 - Turn Firewood into 3 sticks using any saw.
-- Set spawn point when sleeping in a bed.
 - Sound on new chat messages.
 
 > The Zoom logic was based on [vsmod-ZoomButton](https://github.com/chriswa/vsmod-ZoomButton) by [chriswa](https://github.com/chriswa).

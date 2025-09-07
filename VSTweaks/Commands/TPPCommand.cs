@@ -2,7 +2,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
 namespace VSTweaks.Commands {
-    internal static class TeleportCommand {
+    internal static class TPPCommand {
         public static void Register(ICoreServerAPI api) {
             api.ChatCommands.Create("tpp")
                .WithDescription("Teleport to a player.")
