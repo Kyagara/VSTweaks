@@ -4,17 +4,18 @@ using System.Linq;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Server;
 
 using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers {
-	internal sealed class SortingHandler {
+	internal sealed class SortHandler {
 		private ICoreClientAPI _clientAPI;
 		private IClientNetworkChannel _clientChannel;
 
-		private SortingHandler() { }
-		private static readonly Lazy<SortingHandler> _lazy = new(() => new SortingHandler());
-		public static SortingHandler Instance => _lazy.Value;
+		private SortHandler() { }
+		private static readonly Lazy<SortHandler> _lazy = new(() => new SortHandler());
+		public static SortHandler Instance => _lazy.Value;
 
 		public void InitializeClient(ICoreClientAPI api) {
 			_clientAPI = api;
@@ -25,7 +26,7 @@ namespace VSTweaks.Networking.Handlers {
 			// The player is not hovering any particular storage,
 			// don't send inventoryID so the server sorts every open storage
 			if (_clientAPI?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
-				_clientChannel.SendPacket(new SortRequestPacket() { InventoryID = "" });
+				_clientChannel.SendPacket(new SortPacket() { InventoryID = "" });
 				return true;
 			}
 
@@ -34,11 +35,11 @@ namespace VSTweaks.Networking.Handlers {
 
 			if (id.StartsWith("creative") || inventory.Empty) return false;
 
-			_clientChannel.SendPacket(new SortRequestPacket() { InventoryID = id });
+			_clientChannel.SendPacket(new SortPacket() { InventoryID = id });
 			return true;
 		}
 
-		public static void OnClientSortRequest(IPlayer fromPlayer, SortRequestPacket networkMessage) {
+		public static void OnClientSortPacket(IServerPlayer fromPlayer, SortPacket networkMessage) {
 			var inventories = GetInventories(fromPlayer, networkMessage.InventoryID);
 
 			foreach (var inventory in inventories) {
@@ -68,7 +69,7 @@ namespace VSTweaks.Networking.Handlers {
 			}
 		}
 
-		private static IEnumerable<IInventory> GetInventories(IPlayer player, string inventoryID) {
+		private static IEnumerable<IInventory> GetInventories(IServerPlayer player, string inventoryID) {
 			if (string.IsNullOrEmpty(inventoryID)) {
 				return player?.InventoryManager?.OpenedInventories?
 					.Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)

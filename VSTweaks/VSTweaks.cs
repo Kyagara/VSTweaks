@@ -10,9 +10,10 @@ using HarmonyLib;
 
 namespace VSTweaks {
 	public class VSTweaks : ModSystem {
-		public const string ShareWaypointChannelName = "vstweaks.share_waypoint";
-		public const string SortChannelName = "vstweaks.sorting";
-		public const string ZoomHotKeyCode = "vstweaks.zoom_camera";
+		public const string WaypointTeleportChannelName = "vstweaks.waypoint_teleport";
+		public const string WaypointShareChannelName = "vstweaks.waypoint_share";
+		public const string SortChannelName = "vstweaks.sort";
+		public const string ZoomHotKeyCode = "vstweaks.zoom";
 
 		private ICoreClientAPI _clientAPI;
 
@@ -22,14 +23,19 @@ namespace VSTweaks {
 		public override void Start(ICoreAPI api) {
 			Config.Instance.Initialize(api, Mod.Logger);
 
-			if (Config.Instance.EnableSorting) {
+			if (Config.Instance.EnableSort) {
 				api.Network.RegisterChannel(SortChannelName)
-					.RegisterMessageType<SortRequestPacket>();
+					.RegisterMessageType<SortPacket>();
+			}
+
+			if (Config.Instance.EnableWaypointTeleport) {
+				api.Network.RegisterChannel(WaypointTeleportChannelName)
+					.RegisterMessageType<WaypointTeleportPacket>();
 			}
 
 			if (Config.Instance.EnableWaypointShare) {
-				api.Network.RegisterChannel(ShareWaypointChannelName)
-					.RegisterMessageType<ShareWaypointPacket>();
+				api.Network.RegisterChannel(WaypointShareChannelName)
+					.RegisterMessageType<WaypointSharePacket>();
 			}
 
 			if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
@@ -40,7 +46,7 @@ namespace VSTweaks {
 				patcher.PatchCategory($"{Mod.Info.ModID}.bed");
 			}
 
-			if (Config.Instance.EnableWaypointClickTeleport || Config.Instance.EnableWaypointShare) {
+			if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
 				patcher.PatchCategory($"{Mod.Info.ModID}.waypoint");
 			}
 		}
@@ -62,10 +68,10 @@ namespace VSTweaks {
 		public override void StartClientSide(ICoreClientAPI api) {
 			_clientAPI = api;
 
-			if (Config.Instance.EnableSorting) {
-				SortingHandler.Instance.InitializeClient(api);
-				api.Input.RegisterHotKey("vstweaks.sort_inventories", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
-				api.Input.SetHotKeyHandler("vstweaks.sort_inventories", SortingHandler.Instance.C2SSendSortPacket);
+			if (Config.Instance.EnableSort) {
+				SortHandler.Instance.InitializeClient(api);
+				api.Input.RegisterHotKey("vstweaks.sort", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
+				api.Input.SetHotKeyHandler("vstweaks.sort", SortHandler.Instance.C2SSendSortPacket);
 			}
 
 			if (Config.Instance.EnableZoom) {
@@ -84,8 +90,8 @@ namespace VSTweaks {
 				api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
 			}
 
-			if (Config.Instance.EnableWaypointShare) {
-				ShareWaypointHandler.Initialize(api);
+			if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
+				WaypointHandler.Initialize(api);
 			}
 
 			if (Config.Instance.EnableTPPCommand) {

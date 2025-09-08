@@ -6,7 +6,7 @@ using Vintagestory.API.Datastructures;
 namespace VSTweaks {
 	public class Config {
 		// First config release (v0.2.0) had no Version field.
-		public int Version { get; private set; } = 6;
+		public int Version { get; private set; } = 5;
 
 		public bool EnableZoom { get; private set; } = true;
 		// Lower values = zooms farther.
@@ -20,14 +20,15 @@ namespace VSTweaks {
 		public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
 		public bool DisableExclusiveCrafting { get; private set; } = true;
-		public bool EnableSorting { get; private set; } = true;
+		public bool EnableSort { get; private set; } = true;
 		public bool EnableSetSpawnOnSleep { get; private set; } = true;
-		public bool EnableWaypointClickTeleport { get; private set; } = true;
+		public bool EnableWaypointTeleport { get; private set; } = true;
 		public bool EnableWaypointShare { get; private set; } = true;
 
 		public bool EnableTPPCommand { get; private set; } = true;
 		public bool EnableHomeCommand { get; private set; } = true;
 
+		public string WaypointTeleportPerm { get; private set; } = "tp";
 		public string TPPCommandPerm { get; private set; } = "tp";
 		public string HomeCommandPerm { get; private set; } = "chat";
 
@@ -63,14 +64,15 @@ namespace VSTweaks {
 			ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
 
 			DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
-			EnableSorting = config["EnableSorting"].AsBool(EnableSorting);
+			EnableSort = config["EnableSort"].AsBool(EnableSort);
 			EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
-			EnableWaypointClickTeleport = config["EnableWaypointClickTeleport"].AsBool(EnableWaypointClickTeleport);
+			EnableWaypointTeleport = config["EnableWaypointTeleport"].AsBool(EnableWaypointTeleport);
 			EnableWaypointShare = config["EnableWaypointShare"].AsBool(EnableWaypointShare);
 
 			EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
 			EnableHomeCommand = config["EnableHomeCommand"].AsBool(EnableHomeCommand);
 
+			WaypointTeleportPerm = config["WaypointTeleportPerm"].AsString(WaypointTeleportPerm);
 			TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
 			HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
 		}

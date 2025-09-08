@@ -9,14 +9,19 @@ namespace VSTweaks.Networking {
 		public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
 		public override void StartServerSide(ICoreServerAPI api) {
-			if (Config.Instance.EnableSorting) {
+			if (Config.Instance.EnableSort) {
 				api.Network.GetChannel(VSTweaks.SortChannelName)
-				   .SetMessageHandler<SortRequestPacket>(SortingHandler.OnClientSortRequest);
+				   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
+			}
+
+			if (Config.Instance.EnableWaypointTeleport) {
+				api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
+				   .SetMessageHandler<WaypointTeleportPacket>(WaypointHandler.OnClientWaypointTeleport);
 			}
 
 			if (Config.Instance.EnableWaypointShare) {
-				api.Network.GetChannel(VSTweaks.ShareWaypointChannelName)
-				   .SetMessageHandler<ShareWaypointPacket>(ShareWaypointHandler.OnClientShareWaypoint);
+				api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
+				   .SetMessageHandler<WaypointSharePacket>(WaypointHandler.OnClientWaypointShare);
 			}
 		}
 	}

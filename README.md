@@ -14,7 +14,7 @@ Feedback or bug reports are very much appreciated!
 - Zoom with `Z`.
 - Set spawn point when sleeping in a bed.
 - Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
-- LMB on waypoint to teleport (requires `tp` permission), Ctrl+LMB to share it. WIP, lacks GUI, broadcasts to everyone.
+- LMB on waypoint to teleport (by default requires `tp` permission), Ctrl+LMB to share. WIP, lacks GUI, broadcasts shares to everyone.
 - Teleport to someone using `/tpp <player>` (by default requires `tp` permission).
 - Teleport to your spawn point using `/home` (by default requires `chat` permission).
 - Turn Firewood into 3 sticks using any saw.
@@ -41,12 +41,13 @@ Default config:
   "EnableNewChatMessageSound": true,
   "ChatMessageSoundVolume": 0.3,
   "DisableExclusiveCrafting": true,
-  "EnableSorting": true,
+  "EnableSort": true,
   "EnableSetSpawnOnSleep": true,
-  "EnableWaypointClickTeleport": true,
+  "EnableWaypointTeleport": true,
   "EnableWaypointShare": true,
   "EnableTPPCommand": true,
   "EnableCommandCommand": true,
+  "WaypointTeleportPerm": "tp",
   "TPPCommandPerm": "tp",
   "HomeCommandPerm": "chat"
 }
@@ -54,8 +55,7 @@ Default config:
 
 #### TODO
 - "Trashcan", either a block, inventory slot or hotkey that you can press and delete items.
-- Implement sharing waypoint in the add/edit waypoint dialog.
-- Move waypoint teleport to server so we can check the users permission, this way the permission necessary to teleport is customizable.
+- Add waypoint Teleport/Share buttons in the add/edit waypoint dialog.
 - Port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks). Some that might be useful are:
   - Music selection
   - Autowalk
