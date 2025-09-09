@@ -21,7 +21,6 @@ namespace VSTweaks.Hotkeys {
 
 		public void Initialize(ICoreClientAPI api) {
 			clientAPI = api;
-			api.Event.RegisterGameTickListener(OnZoomHeld, 1000 / 90);
 		}
 
 		public void OnZoomHeld(float dt) {

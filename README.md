@@ -1,8 +1,5 @@
 ## VSTweaks
 
-> [!WARNING]
-> This mod is constantly evolving and only tested on a small server of 4 players, please backup your worlds.
-
 I wanted to use some C# and some weeks ago I started playing Vintage Story, so I decided to port some features of my old Minecraft mods. My goal is to make this a collection of features and let people customize as much as possible to keep compatibility with other mods, allowing for other mods that implement a feature in a better way to be used at the same time.
 
 Though I am focused on adding things from the TODO list (and things I always forget to add to it), I am open to requests.
@@ -14,7 +11,7 @@ Feedback or bug reports are very much appreciated!
 - Zoom with `Z`.
 - Set spawn point when sleeping in a bed.
 - Disable exclusive crafting (Sewing kit and clothes from Tailor, Sling from Malefactor and so on).
-- LMB on waypoint to teleport (by default requires `tp` permission), Ctrl+LMB to share. WIP, lacks GUI, broadcasts shares to everyone.
+- `LMB` on waypoint to teleport (by default requires `tp` permission), `Ctrl+LMB` to share. WIP, lacks GUI, broadcasts shares to everyone.
 - Teleport to someone using `/tpp <player>` (by default requires `tp` permission).
 - Teleport to your spawn point using `/home` (by default requires `chat` permission).
 - Turn Firewood into 3 sticks using any saw.
@@ -54,6 +51,7 @@ Default config:
 ```
 
 #### TODO
+- Rework zoom.
 - "Trashcan", either a block, inventory slot or hotkey that you can press and delete items.
 - Add waypoint Teleport/Share buttons in the add/edit waypoint dialog.
 - Port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks). Some that might be useful are:
