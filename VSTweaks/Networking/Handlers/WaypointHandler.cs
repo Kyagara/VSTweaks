@@ -3,6 +3,7 @@ using System.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
 using VSTweaks.Networking.Packets;
@@ -30,11 +31,15 @@ namespace VSTweaks.Networking.Handlers {
 
 		public static void OnClientWaypointShare(IServerPlayer fromPlayer, WaypointSharePacket networkMessage) {
 			var playerName = fromPlayer.PlayerName;
+
 			var pos = networkMessage.Pos;
 			var coords = $"={pos.X} {pos.Y} ={pos.Z}";
-			var title = networkMessage.Title;
 
-			var cmd = $"command:////waypoint addat {coords} false white {title}";
+			var title = networkMessage.Title;
+			var icon = networkMessage.Icon;
+			var color = ColorUtil.Int2Hex(networkMessage.Color);
+
+			var cmd = $"command:////waypoint addati {icon} {coords} false {color} {title}";
 
 			_serverAPI.BroadcastMessageToAllGroups($"{playerName} shared waypoint <a href=\"{cmd}\">{title}</a>.", EnumChatType.Notification);
 		}

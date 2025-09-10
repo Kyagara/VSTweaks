@@ -10,5 +10,11 @@ namespace VSTweaks.Networking.Packets {
 
 		[ProtoMember(2)]
 		public string Title;
+
+		[ProtoMember(3)]
+		public string Icon;
+
+		[ProtoMember(4)]
+		public int Color;
 	}
 }

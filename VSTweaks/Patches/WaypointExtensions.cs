@@ -12,18 +12,21 @@ namespace VSTweaks.Patches {
 		public static void WaypointTeleportAndShare(WaypointMapComponent __instance, MouseEvent args, Waypoint ___waypoint, bool ___mouseOver) {
 			if (args.Button == EnumMouseButton.Right) return;
 
-			if (___waypoint.Position.Y.Equals(1)) {
-				__instance.capi.ShowChatMessage("The Y value of this waypoint is invalid (1). Remake using '/waypoint add [color] [title]' standing in the desired location.");
+			if (!___mouseOver) return;
+
+			if (___waypoint.Position.Y < 2 && ___waypoint.Position.Y > 0) {
+				__instance.capi.ShowChatMessage("<i>The Y value is invalid (1). Remake the waypoint within range of the desired location.</i>");
 				return;
 			}
 
-			if (!___mouseOver) return;
-
 			var destination = ___waypoint.Position.AsBlockPos;
+			var title = ___waypoint.Title;
+			var icon = ___waypoint.Icon;
+			var color = ___waypoint.Color;
 
 			if (Config.Instance.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
 				var shareChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointShareChannelName);
-				shareChannel.SendPacket(new WaypointSharePacket() { Pos = destination, Title = ___waypoint.Title });
+				shareChannel.SendPacket(new WaypointSharePacket() { Pos = destination, Title = title, Icon = icon, Color = color });
 				return;
 			}
 
