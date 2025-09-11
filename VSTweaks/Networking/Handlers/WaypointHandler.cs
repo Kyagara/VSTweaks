@@ -10,14 +10,14 @@ using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers {
 	internal sealed class WaypointHandler {
-		private static ICoreServerAPI _serverAPI;
+		private static ICoreServerAPI sapi;
 
 		private WaypointHandler() { }
 		private static readonly Lazy<WaypointHandler> _lazy = new(() => new WaypointHandler());
 		public static WaypointHandler Instance => _lazy.Value;
 
-		public static void Initialize(ICoreServerAPI api) {
-			_serverAPI = api;
+		public static void InitializeServer(ICoreServerAPI api) {
+			sapi = api;
 		}
 
 		public static void OnClientWaypointTeleport(IServerPlayer fromPlayer, WaypointTeleportPacket networkMessage) {
@@ -41,7 +41,7 @@ namespace VSTweaks.Networking.Handlers {
 
 			var cmd = $"command:////waypoint addati {icon} {coords} false {color} {title}";
 
-			_serverAPI.BroadcastMessageToAllGroups($"{playerName} shared waypoint <a href=\"{cmd}\">{title}</a>.", EnumChatType.Notification);
+			sapi.BroadcastMessageToAllGroups($"{playerName} shared waypoint <a href=\"{cmd}\">{title}</a>.", EnumChatType.Notification);
 		}
 	}
 }

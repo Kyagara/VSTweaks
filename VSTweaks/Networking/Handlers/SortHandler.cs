@@ -10,32 +10,32 @@ using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers {
 	internal sealed class SortHandler {
-		private ICoreClientAPI _clientAPI;
-		private IClientNetworkChannel _clientChannel;
+		private ICoreClientAPI capi;
+		private IClientNetworkChannel sortChannel;
 
 		private SortHandler() { }
 		private static readonly Lazy<SortHandler> _lazy = new(() => new SortHandler());
 		public static SortHandler Instance => _lazy.Value;
 
 		public void InitializeClient(ICoreClientAPI api) {
-			_clientAPI = api;
-			_clientChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
+			capi = api;
+			sortChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
 		}
 
-		public bool C2SSendSortPacket(KeyCombination _keyCombo) {
+		public bool SendSortPacket(KeyCombination _keyCombo) {
 			// The player is not hovering any particular storage,
 			// don't send inventoryID so the server sorts every open storage
-			if (_clientAPI?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
-				_clientChannel.SendPacket(new SortPacket() { InventoryID = "" });
+			if (capi?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
+				sortChannel.SendPacket(new SortPacket() { InventoryID = "" });
 				return true;
 			}
 
-			var inventory = _clientAPI.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
+			var inventory = capi.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
 			var id = inventory.InventoryID;
 
 			if (id.StartsWith("creative") || inventory.Empty) return false;
 
-			_clientChannel.SendPacket(new SortPacket() { InventoryID = id });
+			sortChannel.SendPacket(new SortPacket() { InventoryID = id });
 			return true;
 		}
 

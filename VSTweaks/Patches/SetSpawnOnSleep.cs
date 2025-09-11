@@ -10,27 +10,16 @@ namespace VSTweaks.Patches {
 		[HarmonyPostfix()]
 		[HarmonyPatch(typeof(BlockEntityBed), "DidMount")]
 		public static void SetSpawnOnDidMount(BlockEntityBed __instance, EntityAgent entityAgent) {
-			if (__instance.MountedBy != null && __instance.MountedBy == entityAgent) {
-				var api = entityAgent.Api;
-				if (api != null && api.Side == EnumAppSide.Server) {
-					if (entityAgent is not EntityPlayer entityPlayer) {
-						return;
-					}
+			if (entityAgent?.Api?.Side != EnumAppSide.Server) return;
 
-					if (entityPlayer.Player == null) {
-						return;
-					}
+			if (__instance.MountedBy == null || __instance.MountedBy != entityAgent) return;
 
-					if (entityPlayer.Player is not IServerPlayer serverPlayer) {
-						return;
-					}
+			if ((entityAgent as EntityPlayer)?.Player is not IServerPlayer serverPlayer) return;
 
-					var newPos = new PlayerSpawnPos(__instance.Pos.X, __instance.Pos.Y, __instance.Pos.Z);
-					serverPlayer.SetSpawnPosition(newPos);
+			var newPos = new PlayerSpawnPos(__instance.Pos.X, __instance.Pos.Y, __instance.Pos.Z);
+			serverPlayer.SetSpawnPosition(newPos);
 
-					serverPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Spawn point set", EnumChatType.Notification);
-				}
-			}
+			serverPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Spawn point set", EnumChatType.Notification);
 		}
 	}
 }

@@ -13,24 +13,24 @@ namespace VSTweaks.Hotkeys {
 		private float zoomState;
 		private bool isZooming;
 
-		private ICoreClientAPI clientAPI;
+		private ICoreClientAPI capi;
 
 		private ZoomHotkey() { }
 		private static readonly Lazy<ZoomHotkey> _instance = new(() => new ZoomHotkey());
 		public static ZoomHotkey Instance => _instance.Value;
 
-		public void Initialize(ICoreClientAPI api) {
-			clientAPI = api;
+		public void InitializeClient(ICoreClientAPI api) {
+			capi = api;
 		}
 
 		public void OnZoomHeld(float dt) {
-			var hotkey = clientAPI.Input.GetHotKeyByCode(VSTweaks.ZoomHotKeyCode);
-			var isHotKeyPressed = clientAPI.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
+			var hotkey = capi.Input.GetHotKeyByCode(VSTweaks.ZoomHotKeyCode);
+			var isHotKeyPressed = capi.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
 
 			if (isHotKeyPressed && zoomState < 1) {
 				if (!isZooming) {
-					originalFov = clientAPI.Settings.Int[FIELD_OF_VIEW_SETTING];
-					originalSensitivity = clientAPI.Settings.Int[MOUSE_SENSITIVITY_SETTING];
+					originalFov = capi.Settings.Int[FIELD_OF_VIEW_SETTING];
+					originalSensitivity = capi.Settings.Int[MOUSE_SENSITIVITY_SETTING];
 					isZooming = true;
 				}
 
@@ -59,8 +59,8 @@ namespace VSTweaks.Hotkeys {
 		}
 
 		private void UpdateSettings() {
-			clientAPI.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, Config.Instance.MaxZoom, zoomState);
-			clientAPI.Settings.Int[MOUSE_SENSITIVITY_SETTING] = Lerp(originalSensitivity, originalSensitivity * 0.5F, zoomState);
+			capi.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, Config.Instance.MaxZoom, zoomState);
+			capi.Settings.Int[MOUSE_SENSITIVITY_SETTING] = Lerp(originalSensitivity, originalSensitivity * 0.5F, zoomState);
 		}
 
 		private static int Lerp(float a, float b, float t) => (int)Math.Round(a + (b - a) * t);

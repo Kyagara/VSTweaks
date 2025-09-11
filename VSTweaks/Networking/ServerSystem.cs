@@ -14,6 +14,10 @@ namespace VSTweaks.Networking {
 				   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
 			}
 
+			if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
+				WaypointHandler.InitializeServer(api);
+			}
+
 			if (Config.Instance.EnableWaypointTeleport) {
 				api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
 				   .SetMessageHandler<WaypointTeleportPacket>(WaypointHandler.OnClientWaypointTeleport);

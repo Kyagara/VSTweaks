@@ -15,7 +15,7 @@ namespace VSTweaks {
 		public const string SortChannelName = "vstweaks.sort";
 		public const string ZoomHotKeyCode = "vstweaks.zoom";
 
-		private ICoreClientAPI _clientAPI;
+		private ICoreClientAPI capi;
 
 		private Harmony patcher;
 
@@ -66,16 +66,16 @@ namespace VSTweaks {
 		}
 
 		public override void StartClientSide(ICoreClientAPI api) {
-			_clientAPI = api;
+			capi = api;
 
 			if (Config.Instance.EnableSort) {
 				SortHandler.Instance.InitializeClient(api);
 				api.Input.RegisterHotKey("vstweaks.sort", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
-				api.Input.SetHotKeyHandler("vstweaks.sort", SortHandler.Instance.C2SSendSortPacket);
+				api.Input.SetHotKeyHandler("vstweaks.sort", SortHandler.Instance.SendSortPacket);
 			}
 
 			if (Config.Instance.EnableZoom) {
-				ZoomHotkey.Instance.Initialize(api);
+				ZoomHotkey.Instance.InitializeClient(api);
 				api.Input.RegisterHotKey(ZoomHotKeyCode, "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
 				api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnZoomHeld, 1000 / 90);
 			}
@@ -90,10 +90,6 @@ namespace VSTweaks {
 				api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
 			}
 
-			if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
-				WaypointHandler.Initialize(api);
-			}
-
 			if (Config.Instance.EnableTPPCommand) {
 				TPPCommand.Register(api);
 			}
@@ -104,7 +100,10 @@ namespace VSTweaks {
 		}
 
 		private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
-			_clientAPI.World.PlaySoundAt("sounds/menubutton_press", _clientAPI.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
+			if (capi?.World?.Player == null) return;
+			var sfx = capi.Assets.TryGet("sounds/menubutton_press");
+			if (sfx == null) return;
+			capi.World.PlaySoundAt(sfx.Location, capi.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
 		}
 
 		public override void Dispose() {

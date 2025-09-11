@@ -10,11 +10,11 @@ namespace VSTweaks.Patches {
 		[HarmonyPostfix()]
 		[HarmonyPatch(typeof(WaypointMapComponent), "OnMouseUpOnElement")]
 		public static void WaypointTeleportAndShare(WaypointMapComponent __instance, MouseEvent args, Waypoint ___waypoint, bool ___mouseOver) {
-			if (args.Button == EnumMouseButton.Right) return;
+			if (args.Button == EnumMouseButton.Right || __instance.capi == null) return;
 
 			if (!___mouseOver) return;
 
-			if (___waypoint.Position.Y < 2 && ___waypoint.Position.Y > 0) {
+			if (___waypoint.Position.Y > 0 && ___waypoint.Position.Y < 2) {
 				__instance.capi.ShowChatMessage("<i>The Y value is invalid (1). Remake the waypoint within range of the desired location.</i>");
 				return;
 			}
@@ -26,12 +26,14 @@ namespace VSTweaks.Patches {
 
 			if (Config.Instance.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
 				var shareChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointShareChannelName);
+				if (shareChannel == null) return;
 				shareChannel.SendPacket(new WaypointSharePacket() { Pos = destination, Title = title, Icon = icon, Color = color });
 				return;
 			}
 
 			if (Config.Instance.EnableWaypointTeleport) {
 				var teleportChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointTeleportChannelName);
+				if (teleportChannel == null) return;
 				teleportChannel.SendPacket(new WaypointTeleportPacket() { Pos = destination });
 			}
 		}
