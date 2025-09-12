@@ -27,9 +27,9 @@ internal sealed class WaypointHandler {
 			return;
 		}
 
-		fromPlayer.Entity.TeleportTo(networkMessage.Pos);
-
-		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"Teleported to {networkMessage.Pos}.", EnumChatType.Notification);
+		BlockPos pos = networkMessage.Pos;
+		fromPlayer.Entity.TeleportTo(pos);
+		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"Teleported to {pos.X} {pos.Y} {pos.Z}.", EnumChatType.Notification);
 	}
 
 	public static void OnClientWaypointShare(IServerPlayer fromPlayer, WaypointSharePacket networkMessage) {
