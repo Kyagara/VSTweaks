@@ -6,16 +6,19 @@ Though I am focused on adding things from the TODO list (and things I always for
 
 Feedback or bug reports are very much appreciated!
 
-### Features:
+### Server features
 
 - Sort all open inventories or the one being hovered by pressing `R`.
-- Zoom with `Z`.
 - Set spawn point when sleeping in a bed.
 - Disable exclusive crafting *(Sewing kit and clothes from Tailor, Sling from Malefactor and so on)*.
 - `LMB` on waypoint to teleport *(by default requires `tp` permission)*, `Ctrl+LMB` to share. *WIP, lacks GUI, broadcasts shares to everyone.*
 - Teleport to someone using `/tpp <player>` *(by default requires `tp` permission)*.
 - Teleport to your spawn point using `/home` *(by default requires `chat` permission)*.
 - Turn Firewood into 3 sticks using any saw.
+
+### Client features
+
+- Zoom with `Z`.
 - Sound on new chat messages.
 
 > *The Zoom logic was based on [vsmod-ZoomButton](https://github.com/chriswa/vsmod-ZoomButton) by [chriswa](https://github.com/chriswa).*
@@ -51,7 +54,7 @@ Default config:
 }
 ```
 
-#### TODO
+## TODO
 
 - Rewrite zoom.
 - "Trashcan", either a block, inventory slot or hotkey that you can press and delete items.
@@ -63,7 +66,8 @@ Default config:
   - Send current coordinates in chat
   - Link item in chat (maybe also let people add descriptions to items)
 - For disabling exclusive recipes, maybe store a list of item names instead of looping all items.
+- Improve config file by separating client and server configs in different json objects, will require adding migrations.
 
-#### Known Issues
+## Known Issues
 
 - With exclusive crafting disabled, the class selection menu will still display a "Exclusive craftable x" text.
