@@ -13,6 +13,7 @@ namespace VSTweaks {
 		public const string WaypointTeleportChannelName = "vstweaks.waypoint_teleport";
 		public const string WaypointShareChannelName = "vstweaks.waypoint_share";
 		public const string SortChannelName = "vstweaks.sort";
+
 		public const string ZoomHotKeyCode = "vstweaks.zoom";
 
 		private ICoreClientAPI capi;
@@ -101,8 +102,10 @@ namespace VSTweaks {
 
 		private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
 			if (capi?.World?.Player == null) return;
+
 			var sfx = capi.Assets.TryGet("sounds/menubutton_press");
 			if (sfx == null) return;
+
 			capi.World.PlaySoundAt(sfx.Location, capi.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
 		}
 

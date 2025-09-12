@@ -27,6 +27,8 @@ namespace VSTweaks.Networking.Handlers {
 			}
 
 			fromPlayer.Entity.TeleportTo(networkMessage.Pos);
+
+			fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"Teleported to {networkMessage.Pos}.", EnumChatType.Notification);
 		}
 
 		public static void OnClientWaypointShare(IServerPlayer fromPlayer, WaypointSharePacket networkMessage) {
