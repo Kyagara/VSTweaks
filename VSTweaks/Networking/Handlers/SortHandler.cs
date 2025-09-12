@@ -8,114 +8,113 @@ using Vintagestory.API.Server;
 
 using VSTweaks.Networking.Packets;
 
-namespace VSTweaks.Networking.Handlers {
-	internal sealed class SortHandler {
-		private ICoreClientAPI capi;
-		private IClientNetworkChannel sortChannel;
+namespace VSTweaks.Networking.Handlers;
 
-		private SortHandler() { }
-		private static readonly Lazy<SortHandler> _lazy = new(() => new SortHandler());
-		public static SortHandler Instance => _lazy.Value;
+internal sealed class SortHandler {
+	private ICoreClientAPI capi;
+	private IClientNetworkChannel sortChannel;
 
-		public void InitializeClient(ICoreClientAPI api) {
-			capi = api;
-			sortChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
-		}
+	private SortHandler() { }
+	private static readonly Lazy<SortHandler> _lazy = new(() => new SortHandler());
+	public static SortHandler Instance => _lazy.Value;
 
-		public bool SendSortPacket(KeyCombination _keyCombo) {
-			// The player is not hovering any particular storage,
-			// don't send inventoryID so the server sorts every open storage
-			if (capi?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
-				sortChannel.SendPacket(new SortPacket() { InventoryID = "" });
-				return true;
-			}
+	public void InitializeClient(ICoreClientAPI api) {
+		capi = api;
+		sortChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
+	}
 
-			var inventory = capi.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
-			var id = inventory.InventoryID;
-
-			if (id.StartsWith("creative") || inventory.Empty) return false;
-
-			sortChannel.SendPacket(new SortPacket() { InventoryID = id });
+	public bool SendSortPacket(KeyCombination _keyCombo) {
+		// The player is not hovering any particular storage,
+		// don't send inventoryID so the server sorts every open storage
+		if (capi?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
+			sortChannel.SendPacket(new SortPacket() { InventoryID = "" });
 			return true;
 		}
 
-		public static void OnClientSortPacket(IServerPlayer fromPlayer, SortPacket networkMessage) {
-			var inventories = GetInventories(fromPlayer, networkMessage.InventoryID);
+		InventoryBase inventory = capi.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
+		string id = inventory.InventoryID;
 
-			foreach (var inventory in inventories) {
-				var initial = inventory.ToArray();
-				if (initial == null) continue;
+		if (id.StartsWith("creative") || inventory.Empty) return false;
 
-				var ordered = initial
-					.Select((slot, index) => (slot, originalIndex: index))
-					.OrderBy(t => t.slot == null || t.slot.Itemstack == null || string.IsNullOrEmpty(t.slot.Itemstack.GetName()))
-					.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
-					.ToArray();
+		sortChannel.SendPacket(new SortPacket() { InventoryID = id });
+		return true;
+	}
 
-				int len = ordered.Length;
-				var destToSource = new int[len];
+	public static void OnClientSortPacket(IServerPlayer fromPlayer, SortPacket networkMessage) {
+		IEnumerable<IInventory> inventories = GetInventories(fromPlayer, networkMessage.InventoryID);
 
-				for (int dest = 0; dest < len; dest++) {
-					destToSource[dest] = ordered[dest].originalIndex;
-				}
+		foreach (IInventory inventory in inventories) {
+			ItemSlot[] initial = [.. inventory];
+			if (initial == null) continue;
 
-				var visited = new bool[len];
+			(ItemSlot slot, int originalIndex)[] ordered = [.. initial
+				.Select((slot, index) => (slot, originalIndex: index))
+				.OrderBy(t => t.slot == null || t.slot.Itemstack == null || string.IsNullOrEmpty(t.slot.Itemstack.GetName()))
+				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)];
 
-				for (int start = 0; start < len; start++) {
-					if (visited[start]) continue;
+			int len = ordered.Length;
+			int[] destToSource = new int[len];
 
-					ProcessCycle(inventory, destToSource, visited, start);
-				}
+			for (int dest = 0; dest < len; dest++) {
+				destToSource[dest] = ordered[dest].originalIndex;
+			}
+
+			bool[] visited = new bool[len];
+
+			for (int start = 0; start < len; start++) {
+				if (visited[start]) continue;
+
+				ProcessCycle(inventory, destToSource, visited, start);
 			}
 		}
+	}
 
-		private static IEnumerable<IInventory> GetInventories(IServerPlayer player, string inventoryID) {
-			if (string.IsNullOrEmpty(inventoryID)) {
-				return player?.InventoryManager?.OpenedInventories?
-					.Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)
-					?? [];
-			}
-			else {
-				var inv = player?.InventoryManager?.GetInventory(inventoryID);
-				return (inv != null && !inv.InventoryID.StartsWith("creative") && !inv.Empty)
-					? new[] { inv }
-					: [];
-			}
+	private static IEnumerable<IInventory> GetInventories(IServerPlayer player, string inventoryID) {
+		if (string.IsNullOrEmpty(inventoryID)) {
+			return player?.InventoryManager?.OpenedInventories?
+				.Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)
+				?? [];
+		}
+		else {
+			IInventory inv = player?.InventoryManager?.GetInventory(inventoryID);
+			return (inv != null && !inv.InventoryID.StartsWith("creative") && !inv.Empty)
+				? new[] { inv }
+				: [];
+		}
+	}
+
+	private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start) {
+		int len = destToSource.Length;
+		int current = start;
+
+		if (destToSource[current] == current) {
+			visited[current] = true;
+			return;
 		}
 
-		private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start) {
-			int len = destToSource.Length;
-			int current = start;
+		while (!visited[current]) {
+			visited[current] = true;
 
-			if (destToSource[current] == current) {
-				visited[current] = true;
-				return;
-			}
+			int sourceIndex = destToSource[current];
+			if (sourceIndex == current) break;
 
-			while (!visited[current]) {
-				visited[current] = true;
+			ItemSlot[] snapshot = [.. inventory];
+			if (snapshot == null) break;
 
-				int sourceIndex = destToSource[current];
-				if (sourceIndex == current) break;
+			ItemSlot sourceSlot = snapshot[sourceIndex];
 
-				var snapshot = inventory.ToArray();
-				if (snapshot == null) break;
+			inventory.TryFlipItems(current, sourceSlot);
 
-				var sourceSlot = snapshot[sourceIndex];
+			inventory.MarkSlotDirty(current);
+			inventory.MarkSlotDirty(sourceIndex);
 
-				inventory.TryFlipItems(current, sourceSlot);
-
-				inventory.MarkSlotDirty(current);
-				inventory.MarkSlotDirty(sourceIndex);
-
-				for (int d = 0; d < len; d++) {
-					if (d != current && destToSource[d] == current) {
-						destToSource[d] = sourceIndex;
-					}
+			for (int d = 0; d < len; d++) {
+				if (d != current && destToSource[d] == current) {
+					destToSource[d] = sourceIndex;
 				}
-
-				current = sourceIndex;
 			}
+
+			current = sourceIndex;
 		}
 	}
 }

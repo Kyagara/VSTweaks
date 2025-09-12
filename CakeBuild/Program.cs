@@ -36,7 +36,7 @@ public class BuildContext : FrostingContext {
 		: base(context) {
 		BuildConfiguration = context.Argument("configuration", "Release");
 		SkipJsonValidation = context.Argument("skipJsonValidation", false);
-		var modInfo = context.DeserializeJsonFromFile<ModInfo>($"../{ProjectName}/modinfo.json");
+		ModInfo modInfo = context.DeserializeJsonFromFile<ModInfo>($"../{ProjectName}/modinfo.json");
 		Version = modInfo.Version;
 		Name = modInfo.ModID;
 	}
@@ -48,10 +48,10 @@ public sealed class ValidateJsonTask : FrostingTask<BuildContext> {
 		if (context.SkipJsonValidation) {
 			return;
 		}
-		var jsonFiles = context.GetFiles($"../{BuildContext.ProjectName}/assets/**/*.json");
-		foreach (var file in jsonFiles) {
+		Cake.Core.IO.FilePathCollection jsonFiles = context.GetFiles($"../{BuildContext.ProjectName}/assets/**/*.json");
+		foreach (Cake.Core.IO.FilePath file in jsonFiles) {
 			try {
-				var json = File.ReadAllText(file.FullPath);
+				string json = File.ReadAllText(file.FullPath);
 				JToken.Parse(json);
 			}
 			catch (JsonException ex) {

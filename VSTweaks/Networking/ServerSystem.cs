@@ -4,29 +4,29 @@ using Vintagestory.API.Server;
 using VSTweaks.Networking.Handlers;
 using VSTweaks.Networking.Packets;
 
-namespace VSTweaks.Networking {
-	internal class ServerSystem : ModSystem {
-		public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
+namespace VSTweaks.Networking;
 
-		public override void StartServerSide(ICoreServerAPI api) {
-			if (Config.Instance.EnableSort) {
-				api.Network.GetChannel(VSTweaks.SortChannelName)
-				   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
-			}
+internal class ServerSystem : ModSystem {
+	public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
-			if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
-				WaypointHandler.InitializeServer(api);
-			}
+	public override void StartServerSide(ICoreServerAPI api) {
+		if (Config.Instance.EnableSort) {
+			api.Network.GetChannel(VSTweaks.SortChannelName)
+			   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
+		}
 
-			if (Config.Instance.EnableWaypointTeleport) {
-				api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
-				   .SetMessageHandler<WaypointTeleportPacket>(WaypointHandler.OnClientWaypointTeleport);
-			}
+		if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
+			WaypointHandler.InitializeServer(api);
+		}
 
-			if (Config.Instance.EnableWaypointShare) {
-				api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
-				   .SetMessageHandler<WaypointSharePacket>(WaypointHandler.OnClientWaypointShare);
-			}
+		if (Config.Instance.EnableWaypointTeleport) {
+			api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
+			   .SetMessageHandler<WaypointTeleportPacket>(WaypointHandler.OnClientWaypointTeleport);
+		}
+
+		if (Config.Instance.EnableWaypointShare) {
+			api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
+			   .SetMessageHandler<WaypointSharePacket>(WaypointHandler.OnClientWaypointShare);
 		}
 	}
 }

@@ -2,19 +2,19 @@ using ProtoBuf;
 
 using Vintagestory.API.MathTools;
 
-namespace VSTweaks.Networking.Packets {
-	[ProtoContract]
-	internal class WaypointSharePacket {
-		[ProtoMember(1)]
-		public BlockPos Pos;
+namespace VSTweaks.Networking.Packets;
 
-		[ProtoMember(2)]
-		public string Title;
+[ProtoContract]
+internal class WaypointSharePacket {
+	[ProtoMember(1)]
+	public BlockPos Pos;
 
-		[ProtoMember(3)]
-		public string Icon;
+	[ProtoMember(2)]
+	public string Title;
 
-		[ProtoMember(4)]
-		public int Color;
-	}
+	[ProtoMember(3)]
+	public string Icon;
+
+	[ProtoMember(4)]
+	public int Color;
 }

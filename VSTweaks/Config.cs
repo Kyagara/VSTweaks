@@ -3,82 +3,82 @@ using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace VSTweaks {
-	public class Config {
-		// First config release (v0.2.0) had no Version field.
-		public int Version { get; private set; } = 5;
+namespace VSTweaks;
 
-		public bool EnableZoom { get; private set; } = true;
-		// Lower values = zooms farther.
-		public int MaxZoom { get; private set; } = 20;
-		// Enables a smooth 'transition' from current FOV to the zoomed FOV.
-		public bool ZoomLerp { get; private set; } = true;
+public class Config {
+	// First config release (v0.2.0) had no Version field.
+	public int Version { get; private set; } = 5;
 
-		public bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
+	public bool EnableZoom { get; private set; } = true;
+	// Lower values = zooms farther.
+	public int MaxZoom { get; private set; } = 20;
+	// Enables a smooth 'transition' from current FOV to the zoomed FOV.
+	public bool ZoomLerp { get; private set; } = true;
 
-		public bool EnableNewChatMessageSound { get; private set; } = true;
-		public float ChatMessageSoundVolume { get; private set; } = 0.3F;
+	public bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
 
-		public bool DisableExclusiveCrafting { get; private set; } = true;
-		public bool EnableSort { get; private set; } = true;
-		public bool EnableSetSpawnOnSleep { get; private set; } = true;
-		public bool EnableWaypointTeleport { get; private set; } = true;
-		public bool EnableWaypointShare { get; private set; } = true;
+	public bool EnableNewChatMessageSound { get; private set; } = true;
+	public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
-		public bool EnableTPPCommand { get; private set; } = true;
-		public bool EnableHomeCommand { get; private set; } = true;
+	public bool DisableExclusiveCrafting { get; private set; } = true;
+	public bool EnableSort { get; private set; } = true;
+	public bool EnableSetSpawnOnSleep { get; private set; } = true;
+	public bool EnableWaypointTeleport { get; private set; } = true;
+	public bool EnableWaypointShare { get; private set; } = true;
 
-		public string WaypointTeleportPerm { get; private set; } = "tp";
-		public string TPPCommandPerm { get; private set; } = "tp";
-		public string HomeCommandPerm { get; private set; } = "chat";
+	public bool EnableTPPCommand { get; private set; } = true;
+	public bool EnableHomeCommand { get; private set; } = true;
 
-		private Config() { }
-		private static readonly Lazy<Config> _lazy = new(() => new Config());
-		public static Config Instance => _lazy.Value;
+	public string WaypointTeleportPerm { get; private set; } = "tp";
+	public string TPPCommandPerm { get; private set; } = "tp";
+	public string HomeCommandPerm { get; private set; } = "chat";
 
-		public void Initialize(ICoreAPI api, ILogger logger) {
-			var config = api.LoadModConfig("vstweaks.json");
-			if (config == null) {
-				logger.Log(EnumLogType.Warning, "Config file not found, generating a new one.");
-				Save(api);
-				return;
-			}
+	private Config() { }
+	private static readonly Lazy<Config> _lazy = new(() => new Config());
+	public static Config Instance => _lazy.Value;
 
-			var fileVersion = config["Version"].AsInt();
-			if (fileVersion != Version) {
-				logger.Log(EnumLogType.Warning, $"Config file has old version {fileVersion}, updating to version {Version}.");
-			}
-
-			UpdateState(config);
+	public void Initialize(ICoreAPI api, ILogger logger) {
+		JsonObject config = api.LoadModConfig("vstweaks.json");
+		if (config == null) {
+			logger.Log(EnumLogType.Warning, "Config file not found, generating a new one.");
 			Save(api);
+			return;
 		}
 
-		private void UpdateState(JsonObject config) {
-			EnableZoom = config["EnableZoom"].AsBool(EnableZoom);
-			MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
-			ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);
-
-			EnableSticksFromFirewoodRecipe = config["EnableSticksFromFirewoodRecipe"].AsBool(EnableSticksFromFirewoodRecipe);
-
-			EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
-			ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
-
-			DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
-			EnableSort = config["EnableSort"].AsBool(EnableSort);
-			EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
-			EnableWaypointTeleport = config["EnableWaypointTeleport"].AsBool(EnableWaypointTeleport);
-			EnableWaypointShare = config["EnableWaypointShare"].AsBool(EnableWaypointShare);
-
-			EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
-			EnableHomeCommand = config["EnableHomeCommand"].AsBool(EnableHomeCommand);
-
-			WaypointTeleportPerm = config["WaypointTeleportPerm"].AsString(WaypointTeleportPerm);
-			TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
-			HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
+		int fileVersion = config["Version"].AsInt();
+		if (fileVersion != Version) {
+			logger.Log(EnumLogType.Warning, $"Config file has old version {fileVersion}, updating to version {Version}.");
 		}
 
-		private void Save(ICoreAPI api) {
-			api.StoreModConfig(this, "vstweaks.json");
-		}
+		UpdateState(config);
+		Save(api);
+	}
+
+	private void UpdateState(JsonObject config) {
+		EnableZoom = config["EnableZoom"].AsBool(EnableZoom);
+		MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
+		ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);
+
+		EnableSticksFromFirewoodRecipe = config["EnableSticksFromFirewoodRecipe"].AsBool(EnableSticksFromFirewoodRecipe);
+
+		EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
+		ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
+
+		DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
+		EnableSort = config["EnableSort"].AsBool(EnableSort);
+		EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
+		EnableWaypointTeleport = config["EnableWaypointTeleport"].AsBool(EnableWaypointTeleport);
+		EnableWaypointShare = config["EnableWaypointShare"].AsBool(EnableWaypointShare);
+
+		EnableTPPCommand = config["EnableTPPCommand"].AsBool(EnableTPPCommand);
+		EnableHomeCommand = config["EnableHomeCommand"].AsBool(EnableHomeCommand);
+
+		WaypointTeleportPerm = config["WaypointTeleportPerm"].AsString(WaypointTeleportPerm);
+		TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
+		HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
+	}
+
+	private void Save(ICoreAPI api) {
+		api.StoreModConfig(this, "vstweaks.json");
 	}
 }
