@@ -34,9 +34,10 @@ internal sealed class SortHandler {
 		}
 
 		InventoryBase inventory = capi.World.Player.InventoryManager.CurrentHoveredSlot.Inventory;
-		string id = inventory.InventoryID;
 
-		if (id.StartsWith("creative") || inventory.Empty) return false;
+		if (ShouldSkip(inventory)) return true;
+
+		string id = inventory.InventoryID;
 
 		sortChannel.SendPacket(new SortPacket() { InventoryID = id });
 		return true;
@@ -73,15 +74,12 @@ internal sealed class SortHandler {
 
 	private static IEnumerable<IInventory> GetInventories(IServerPlayer player, string inventoryID) {
 		if (string.IsNullOrEmpty(inventoryID)) {
-			return player?.InventoryManager?.OpenedInventories?
-				.Where(inv => inv != null && !inv.InventoryID.StartsWith("creative") && !inv.InventoryID.StartsWith("hotbar") && !inv.Empty)
-				?? [];
+			List<IInventory> invs = player?.InventoryManager?.OpenedInventories;
+			return invs.Where(inv => !ShouldSkip(inv)) ?? [];
 		}
 		else {
 			IInventory inv = player?.InventoryManager?.GetInventory(inventoryID);
-			return (inv != null && !inv.InventoryID.StartsWith("creative") && !inv.Empty)
-				? new[] { inv }
-				: [];
+			return !ShouldSkip(inv) ? new[] { inv } : [];
 		}
 	}
 
@@ -118,5 +116,12 @@ internal sealed class SortHandler {
 
 			current = sourceIndex;
 		}
+	}
+
+	private static bool ShouldSkip(IInventory inv) {
+		if (inv == null || inv.Empty) return true;
+		string id = inv.InventoryID;
+		if (id.Contains("creative") || id.Contains("hotbar") || id.Contains("backpack")) return true;
+		return false;
 	}
 }
