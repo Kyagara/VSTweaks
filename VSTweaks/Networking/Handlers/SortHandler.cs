@@ -56,6 +56,8 @@ internal sealed class SortHandler {
 				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)];
 
 			int len = ordered.Length;
+			if (len == 0) return;
+
 			int[] destToSource = new int[len];
 
 			for (int dest = 0; dest < len; dest++) {
