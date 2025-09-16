@@ -56,6 +56,8 @@ internal sealed class SortHandler {
 				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)];
 
 			int len = ordered.Length;
+			if (len == 0) return;
+
 			int[] destToSource = new int[len];
 
 			for (int dest = 0; dest < len; dest++) {
@@ -85,6 +87,7 @@ internal sealed class SortHandler {
 
 	private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start) {
 		int len = destToSource.Length;
+
 		int current = start;
 
 		if (destToSource[current] == current) {
@@ -117,7 +120,12 @@ internal sealed class SortHandler {
 			current = sourceIndex;
 		}
 	}
-
+	//[Server Error] Exception: Index was outside the bounds of the array.
+	//    at VSTweaks.Networking.Handlers.SortHandler.ProcessCycle(IInventory inventory, Int32[] destToSource, Boolean[] visited, Int32 start) in /home/stark/Source/VSTweaks/VSTweaks/Networking/Handlers/SortHandler.cs:line 87
+	//    at VSTweaks.Networking.Handlers.SortHandler.OnClientSortPacket(IServerPlayer fromPlayer, SortPacket networkMessage) in /home/stark/Source/VSTweaks/VSTweaks/Networking/Handlers/SortHandler.cs:line 67
+	//    at Vintagestory.Server.NetworkAPI.HandleCustomPacket(Packet_Client packet, ConnectedClient client) in VintagestoryLib\Server\API\NetworkAPI.cs:line 59
+	//    at Vintagestory.Server.ServerMain.HandleClientPacket_mainthread(ReceivedClientPacket cpk) in VintagestoryLib\Server\ServerMainNetworking.cs:line 280
+	//    at Vintagestory.Server.ServerMain.ProcessMain() in VintagestoryLib\Server\ServerMain.cs:line 934
 	private static bool ShouldSkip(IInventory inv) {
 		if (inv == null || inv.Empty) return true;
 		string id = inv.InventoryID;
