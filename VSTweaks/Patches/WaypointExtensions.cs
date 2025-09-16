@@ -28,14 +28,14 @@ internal static class WaypointExtensions {
 
 		if (Config.Instance.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
 			IClientNetworkChannel shareChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointShareChannelName);
-			if (shareChannel == null) return;
+			if (shareChannel == null || !shareChannel.Connected) return;
 			shareChannel.SendPacket(new WaypointSharePacket() { Pos = destination, Title = title, Icon = icon, Color = color });
 			return;
 		}
 
 		if (Config.Instance.EnableWaypointTeleport) {
 			IClientNetworkChannel teleportChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointTeleportChannelName);
-			if (teleportChannel == null) return;
+			if (teleportChannel == null || !teleportChannel.Connected) return;
 			teleportChannel.SendPacket(new WaypointTeleportPacket() { Pos = destination });
 		}
 	}

@@ -24,6 +24,8 @@ internal sealed class SortHandler {
 	}
 
 	public bool SendSortPacket(KeyCombination _keyCombo) {
+		if (!sortChannel.Connected) return true;
+
 		// The player is not hovering any particular storage,
 		// don't send inventoryID so the server sorts every open storage
 		if (capi?.World?.Player?.InventoryManager?.CurrentHoveredSlot?.Inventory == null) {
