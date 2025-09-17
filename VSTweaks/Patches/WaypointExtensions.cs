@@ -2,8 +2,9 @@ using HarmonyLib;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 using Vintagestory.API.Client;
-using VSTweaks.Networking.Packets;
 using Vintagestory.API.MathTools;
+
+using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Patches;
 

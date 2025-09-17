@@ -16,17 +16,17 @@ internal class ServerSystem : ModSystem {
 		}
 
 		if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
-			WaypointHandler.InitializeServer(api);
+			TeleportHandler.InitializeServer(api);
 		}
 
 		if (Config.Instance.EnableWaypointTeleport) {
 			api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
-			   .SetMessageHandler<WaypointTeleportPacket>(WaypointHandler.OnClientWaypointTeleport);
+			   .SetMessageHandler<WaypointTeleportPacket>(TeleportHandler.OnClientWaypointTeleport);
 		}
 
 		if (Config.Instance.EnableWaypointShare) {
 			api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
-			   .SetMessageHandler<WaypointSharePacket>(WaypointHandler.OnClientWaypointShare);
+			   .SetMessageHandler<WaypointSharePacket>(TeleportHandler.OnClientWaypointShare);
 		}
 	}
 }

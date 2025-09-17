@@ -1,21 +1,25 @@
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 
 using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers;
 
-internal sealed class WaypointHandler {
+internal sealed class TeleportHandler {
+	private static readonly ConcurrentDictionary<string, BlockPos> playerPreviousPos = new();
+
 	private static ICoreServerAPI sapi;
 
-	private WaypointHandler() { }
-	private static readonly Lazy<WaypointHandler> _lazy = new(() => new WaypointHandler());
-	public static WaypointHandler Instance => _lazy.Value;
+	private TeleportHandler() { }
+	private static readonly Lazy<TeleportHandler> _lazy = new(() => new TeleportHandler());
+	public static TeleportHandler Instance => _lazy.Value;
 
 	public static void InitializeServer(ICoreServerAPI api) {
 		sapi = api;
@@ -27,9 +31,14 @@ internal sealed class WaypointHandler {
 			return;
 		}
 
+		string uid = fromPlayer.PlayerUID;
+		BlockPos currentPos = fromPlayer.Entity.Pos.AsBlockPos;
+		UpdatePlayerPreviousPos(uid, currentPos);
+
 		BlockPos pos = networkMessage.Pos;
 		fromPlayer.Entity.TeleportTo(pos);
-		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"Teleported to {pos}.", EnumChatType.Notification);
+
+		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Teleported to waypoint.", EnumChatType.Notification);
 	}
 
 	public static void OnClientWaypointShare(IServerPlayer fromPlayer, WaypointSharePacket networkMessage) {
@@ -45,5 +54,17 @@ internal sealed class WaypointHandler {
 		string cmd = $"command:////waypoint addati {icon} {coords} false {color} {title}";
 
 		sapi.BroadcastMessageToAllGroups($"{playerName} shared waypoint <a href=\"{cmd}\">{title}</a>.", EnumChatType.Notification);
+	}
+
+	public static BlockPos GetPlayerPreviousPos(string uid) {
+		return playerPreviousPos.Get(uid);
+	}
+
+	public static void UpdatePlayerPreviousPos(string uid, BlockPos pos) {
+		playerPreviousPos.AddOrUpdate(
+			key: uid,
+			addValueFactory: (key) => pos,
+			updateValueFactory: (key, _) => pos
+		);
 	}
 }

@@ -26,6 +26,6 @@ internal static class SetSpawnOnSleep {
 
 		serverPlayer.SetSpawnPosition(newPos);
 
-		serverPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"Spawn point set at {newPos}.", EnumChatType.Notification);
+		serverPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Spawn point set.", EnumChatType.Notification);
 	}
 }

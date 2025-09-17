@@ -1,5 +1,8 @@
 using Vintagestory.API.Common;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+
+using VSTweaks.Networking.Handlers;
 
 namespace VSTweaks.Commands;
 
@@ -17,8 +20,13 @@ internal static class TPPCommand {
 		if (args.Parsers == null || args.Parsers[0] == null) return TextCommandResult.Error("Parser missing.");
 		if (args.Parsers[0].GetValue() == null) return TextCommandResult.Error("Player value missing.");
 		if (args.Parsers[0].GetValue() is not IPlayer destination) return TextCommandResult.Error("Error casting Parser as Player.");
+		if (args.Caller.Player is not IServerPlayer serverPlayer) return TextCommandResult.Error("Error casting Player as ServerPlayer.");
 
-		args.Caller.Player.Entity.TeleportTo(destination.Entity.Pos);
+		string uid = serverPlayer.PlayerUID;
+		BlockPos currentPos = serverPlayer.Entity.Pos.AsBlockPos;
+		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos);
+
+		serverPlayer.Entity.TeleportTo(destination.Entity.Pos);
 
 		return TextCommandResult.Success($"Teleported to {destination.PlayerName}.");
 	}

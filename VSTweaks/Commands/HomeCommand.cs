@@ -1,6 +1,9 @@
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+
+using VSTweaks.Networking.Handlers;
 
 namespace VSTweaks.Commands;
 
@@ -16,8 +19,11 @@ internal static class HomeCommand {
 	private static TextCommandResult OnHomeCommand(TextCommandCallingArgs args) {
 		if (args.Caller.Player is not IServerPlayer serverPlayer) return TextCommandResult.Error("Error casting Player as ServerPlayer.");
 
-		FuzzyEntityPos pos = serverPlayer.GetSpawnPosition(false);
+		string uid = serverPlayer.PlayerUID;
+		BlockPos currentPos = serverPlayer.Entity.Pos.AsBlockPos;
+		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos);
 
+		FuzzyEntityPos pos = serverPlayer.GetSpawnPosition(false);
 		serverPlayer.Entity.TeleportTo(pos);
 
 		return TextCommandResult.Success("Teleported to your spawn point.");

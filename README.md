@@ -14,6 +14,7 @@ Feedback or bug reports are very much appreciated!
 - `LMB` on waypoint to teleport *(by default requires `tp` permission)*, `Ctrl+LMB` to share. *WIP, lacks GUI, broadcasts shares to everyone.*
 - Teleport to someone using `/tpp <player>` *(by default requires `tp` permission)*.
 - Teleport to your spawn point using `/home` *(by default requires `chat` permission)*.
+- Teleport to your previous location before a teleport or death using `/back` *(by default requires `chat` permission)*.
 - Turn Firewood into 3 sticks using any saw.
 
 ### Client features
@@ -32,7 +33,7 @@ Default config:
 ```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": 5,
+  "Version": 6,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
@@ -50,7 +51,8 @@ Default config:
   "EnableCommandCommand": true,
   "WaypointTeleportPerm": "tp",
   "TPPCommandPerm": "tp",
-  "HomeCommandPerm": "chat"
+  "HomeCommandPerm": "chat",
+  "BackCommandPerm": "chat"
 }
 ```
 

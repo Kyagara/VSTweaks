@@ -7,7 +7,7 @@ namespace VSTweaks;
 
 public class Config {
 	// First config release (v0.2.0) had no Version field.
-	public int Version { get; private set; } = 5;
+	public int Version { get; private set; } = 6;
 
 	public bool EnableZoom { get; private set; } = true;
 	// Lower values = zooms farther.
@@ -28,10 +28,12 @@ public class Config {
 
 	public bool EnableTPPCommand { get; private set; } = true;
 	public bool EnableHomeCommand { get; private set; } = true;
+	public bool EnableBackCommand { get; private set; } = true;
 
 	public string WaypointTeleportPerm { get; private set; } = "tp";
 	public string TPPCommandPerm { get; private set; } = "tp";
 	public string HomeCommandPerm { get; private set; } = "chat";
+	public string BackCommandPerm { get; private set; } = "chat";
 
 	private Config() { }
 	private static readonly Lazy<Config> _lazy = new(() => new Config());
@@ -76,6 +78,7 @@ public class Config {
 		WaypointTeleportPerm = config["WaypointTeleportPerm"].AsString(WaypointTeleportPerm);
 		TPPCommandPerm = config["TPPCommandPerm"].AsString(TPPCommandPerm);
 		HomeCommandPerm = config["HomeCommandPerm"].AsString(HomeCommandPerm);
+		BackCommandPerm = config["BackCommandPerm"].AsString(BackCommandPerm);
 	}
 
 	private void Save(ICoreAPI api) {

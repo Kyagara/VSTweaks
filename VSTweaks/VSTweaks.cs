@@ -99,6 +99,10 @@ public class VSTweaks : ModSystem {
 		if (Config.Instance.EnableHomeCommand) {
 			HomeCommand.Register(api);
 		}
+
+		if (Config.Instance.EnableBackCommand) {
+			BackCommand.Register(api);
+		}
 	}
 
 	private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
