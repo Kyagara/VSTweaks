@@ -52,8 +52,9 @@ internal sealed class SortHandler {
 
 			(ItemSlot slot, int originalIndex)[] ordered = [.. initial
 				.Select((slot, index) => (slot, originalIndex: index))
-				.OrderBy(t => t.slot == null || t.slot.Itemstack == null || string.IsNullOrEmpty(t.slot.Itemstack.GetName()))
-				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)];
+				.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
+				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
+			];
 
 			int len = ordered.Length;
 			if (len == 0) return;
@@ -123,7 +124,7 @@ internal sealed class SortHandler {
 	private static bool ShouldSkip(IInventory inv) {
 		if (inv == null || inv.Empty) return true;
 		string id = inv.InventoryID;
-		if (id.Contains("creative") || id.Contains("hotbar") || id.Contains("backpack")) return true;
+		if (id.Contains("creative") || id.Contains("hotbar") || id.Contains("character")) return true;
 		return false;
 	}
 }
