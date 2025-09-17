@@ -7,7 +7,7 @@
 		"Kyagara"
 	],
 	"description": "Storage sorting, zoom, waypoint sharing and other configurable quality of life features.",
-	"version": "0.5.5",
+	"version": "0.5.6",
 	"dependencies": {
 		"game": "*"
 	}
