@@ -20,6 +20,10 @@ public class Config {
 	public bool EnableNewChatMessageSound { get; private set; } = true;
 	public float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
+	// When enabled, commands will output succesful results.
+	// Features will still display errors when they happen if disabled.
+	public bool EnableFeedback { get; private set; } = true;
+
 	public bool DisableExclusiveCrafting { get; private set; } = true;
 	public bool EnableSort { get; private set; } = true;
 	public bool EnableSetSpawnOnSleep { get; private set; } = true;
@@ -65,6 +69,8 @@ public class Config {
 
 		EnableNewChatMessageSound = config["EnableNewChatMessageSound"].AsBool(EnableNewChatMessageSound);
 		ChatMessageSoundVolume = config["ChatMessageSoundVolume"].AsFloat(ChatMessageSoundVolume);
+
+		EnableFeedback = config["EnableFeedback"].AsBool(EnableFeedback);
 
 		DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
 		EnableSort = config["EnableSort"].AsBool(EnableSort);

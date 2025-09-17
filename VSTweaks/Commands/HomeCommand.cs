@@ -26,6 +26,7 @@ internal static class HomeCommand {
 		FuzzyEntityPos pos = serverPlayer.GetSpawnPosition(false);
 		serverPlayer.Entity.TeleportTo(pos);
 
+		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success("Teleported to your spawn point.");
 	}
 }

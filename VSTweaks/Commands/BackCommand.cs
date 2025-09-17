@@ -22,6 +22,7 @@ internal static class BackCommand {
 		BlockPos previousPos = TeleportHandler.GetPlayerPreviousPos(uid);
 		serverPlayer.Entity.TeleportTo(previousPos);
 
+		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success("Teleported to your previous location.");
 	}
 }

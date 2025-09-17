@@ -40,16 +40,16 @@ public class VSTweaks : ModSystem {
 				.RegisterMessageType<WaypointSharePacket>();
 		}
 
-		if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
+		if (Harmony.HasAnyPatches("vstweaks")) return;
 
-		patcher = new Harmony(Mod.Info.ModID);
+		patcher = new Harmony("vstweaks");
 
 		if (Config.Instance.EnableSetSpawnOnSleep) {
-			patcher.PatchCategory($"{Mod.Info.ModID}.bed");
+			patcher.PatchCategory("vstweaks.bed");
 		}
 
 		if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
-			patcher.PatchCategory($"{Mod.Info.ModID}.waypoint");
+			patcher.PatchCategory("vstweaks.waypoint");
 		}
 	}
 
@@ -115,6 +115,6 @@ public class VSTweaks : ModSystem {
 	}
 
 	public override void Dispose() {
-		patcher?.UnpatchAll(Mod.Info.ModID);
+		patcher?.UnpatchAll("vstweaks");
 	}
 }

@@ -43,6 +43,9 @@ Default config:
   "EnableNewChatMessageSound": true,
   "ChatMessageSoundVolume": 0.3,
   "DisableExclusiveCrafting": true,
+  // When enabled, commands will output succesful results.
+	// Features will still display errors when they happen if disabled.
+  "EnableFeedback": true,
   "EnableSort": true,
   "EnableSetSpawnOnSleep": true,
   "EnableWaypointTeleport": true,

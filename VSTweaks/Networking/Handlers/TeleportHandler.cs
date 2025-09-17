@@ -38,6 +38,7 @@ internal sealed class TeleportHandler {
 		BlockPos pos = networkMessage.Pos;
 		fromPlayer.Entity.TeleportTo(pos);
 
+		if (!Config.Instance.EnableFeedback) return;
 		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Teleported to waypoint.", EnumChatType.Notification);
 	}
 

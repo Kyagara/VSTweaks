@@ -28,6 +28,7 @@ internal static class TPPCommand {
 
 		serverPlayer.Entity.TeleportTo(destination.Entity.Pos);
 
+		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success($"Teleported to {destination.PlayerName}.");
 	}
 }
