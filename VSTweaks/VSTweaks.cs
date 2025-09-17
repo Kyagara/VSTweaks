@@ -24,18 +24,19 @@ public class VSTweaks : ModSystem {
 	// Server and Client
 	public override void Start(ICoreAPI api) {
 		Config.Instance.Initialize(api, Mod.Logger);
+		Config config = Config.Instance;
 
-		if (Config.Instance.EnableSort) {
+		if (config.EnableSort) {
 			api.Network.RegisterChannel(SortChannelName)
 				.RegisterMessageType<SortPacket>();
 		}
 
-		if (Config.Instance.EnableWaypointTeleport) {
+		if (config.EnableWaypointTeleport) {
 			api.Network.RegisterChannel(WaypointTeleportChannelName)
 				.RegisterMessageType<WaypointTeleportPacket>();
 		}
 
-		if (Config.Instance.EnableWaypointShare) {
+		if (config.EnableWaypointShare) {
 			api.Network.RegisterChannel(WaypointShareChannelName)
 				.RegisterMessageType<WaypointSharePacket>();
 		}
@@ -44,11 +45,11 @@ public class VSTweaks : ModSystem {
 
 		patcher = new Harmony("vstweaks");
 
-		if (Config.Instance.EnableSetSpawnOnSleep) {
+		if (config.EnableSetSpawnOnSleep) {
 			patcher.PatchCategory("vstweaks.bed");
 		}
 
-		if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
+		if (config.EnableWaypointTeleport || config.EnableWaypointShare) {
 			patcher.PatchCategory("vstweaks.waypoint");
 		}
 	}
@@ -69,38 +70,41 @@ public class VSTweaks : ModSystem {
 
 	public override void StartClientSide(ICoreClientAPI api) {
 		capi = api;
+		Config config = Config.Instance;
 
-		if (Config.Instance.EnableSort) {
+		if (config.EnableSort) {
 			SortHandler.Instance.InitializeClient(api);
 			api.Input.RegisterHotKey("vstweaks.sort", "Sort all inventories open or the one being hovered", GlKeys.R, HotkeyType.GUIOrOtherControls);
 			api.Input.SetHotKeyHandler("vstweaks.sort", SortHandler.Instance.SendSortPacket);
 		}
 
-		if (Config.Instance.EnableZoom) {
+		if (config.EnableZoom) {
 			ZoomHotkey.Instance.InitializeClient(api);
 			api.Input.RegisterHotKey(ZoomHotKeyCode, "Zoom in", GlKeys.Z, HotkeyType.GUIOrOtherControls);
 			api.Event.RegisterGameTickListener(ZoomHotkey.Instance.OnZoomHeld, 1000 / 90);
 		}
 
-		if (Config.Instance.EnableNewChatMessageSound) {
+		if (config.EnableNewChatMessageSound) {
 			api.Event.ChatMessage += PlaySoundOnChatMessage;
 		}
 	}
 
 	public override void StartServerSide(ICoreServerAPI api) {
-		if (Config.Instance.EnableSticksFromFirewoodRecipe) {
+		Config config = Config.Instance;
+
+		if (config.EnableSticksFromFirewoodRecipe) {
 			api.RegisterCraftingRecipe(new SticksFromFirewoodRecipe(api.World));
 		}
 
-		if (Config.Instance.EnableTPPCommand) {
+		if (config.EnableTPPCommand) {
 			TPPCommand.Register(api);
 		}
 
-		if (Config.Instance.EnableHomeCommand) {
+		if (config.EnableHomeCommand) {
 			HomeCommand.Register(api);
 		}
 
-		if (Config.Instance.EnableBackCommand) {
+		if (config.EnableBackCommand) {
 			BackCommand.Register(api);
 		}
 	}

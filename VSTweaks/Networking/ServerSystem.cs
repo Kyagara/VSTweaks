@@ -10,21 +10,23 @@ internal class ServerSystem : ModSystem {
 	public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
 	public override void StartServerSide(ICoreServerAPI api) {
-		if (Config.Instance.EnableSort) {
+		Config config = Config.Instance;
+
+		if (config.EnableSort) {
 			api.Network.GetChannel(VSTweaks.SortChannelName)
 			   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
 		}
 
-		if (Config.Instance.EnableWaypointTeleport || Config.Instance.EnableWaypointShare) {
+		if (config.EnableWaypointTeleport || config.EnableWaypointShare || config.EnableBackCommand) {
 			TeleportHandler.InitializeServer(api);
 		}
 
-		if (Config.Instance.EnableWaypointTeleport) {
+		if (config.EnableWaypointTeleport) {
 			api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
 			   .SetMessageHandler<WaypointTeleportPacket>(TeleportHandler.OnClientWaypointTeleport);
 		}
 
-		if (Config.Instance.EnableWaypointShare) {
+		if (config.EnableWaypointShare) {
 			api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
 			   .SetMessageHandler<WaypointSharePacket>(TeleportHandler.OnClientWaypointShare);
 		}
