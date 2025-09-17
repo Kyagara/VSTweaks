@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -13,7 +14,7 @@ using VSTweaks.Networking.Packets;
 namespace VSTweaks.Networking.Handlers;
 
 internal sealed class TeleportHandler {
-	private static readonly ConcurrentDictionary<string, BlockPos> playerPreviousPos = new();
+	private static readonly ConcurrentDictionary<string, EntityPos> playerPreviousPos = new();
 
 	private static ICoreServerAPI sapi;
 
@@ -32,7 +33,7 @@ internal sealed class TeleportHandler {
 		}
 
 		string uid = fromPlayer.PlayerUID;
-		BlockPos currentPos = fromPlayer.Entity.Pos.AsBlockPos;
+		EntityPos currentPos = fromPlayer.Entity.Pos;
 		UpdatePlayerPreviousPos(uid, currentPos);
 
 		BlockPos pos = networkMessage.Pos;
@@ -57,11 +58,11 @@ internal sealed class TeleportHandler {
 		sapi.BroadcastMessageToAllGroups($"{playerName} shared waypoint <a href=\"{cmd}\">{title}</a>.", EnumChatType.Notification);
 	}
 
-	public static BlockPos GetPlayerPreviousPos(string uid) {
+	public static EntityPos GetPlayerPreviousPos(string uid) {
 		return playerPreviousPos.Get(uid);
 	}
 
-	public static void UpdatePlayerPreviousPos(string uid, BlockPos pos) {
+	public static void UpdatePlayerPreviousPos(string uid, EntityPos pos) {
 		playerPreviousPos.AddOrUpdate(
 			key: uid,
 			addValueFactory: (key) => pos,

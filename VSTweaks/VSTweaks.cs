@@ -52,6 +52,10 @@ public class VSTweaks : ModSystem {
 		if (config.EnableWaypointTeleport || config.EnableWaypointShare) {
 			patcher.PatchCategory("vstweaks.waypoint");
 		}
+
+		if (config.EnableBackCommand) {
+			patcher.PatchCategory("vstweaks.back");
+		}
 	}
 
 	public override void AssetsFinalize(ICoreAPI api) {

@@ -1,5 +1,5 @@
 using Vintagestory.API.Common;
-using Vintagestory.API.MathTools;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 
 using VSTweaks.Networking.Handlers;
@@ -19,7 +19,7 @@ internal static class BackCommand {
 		if (args.Caller.Player is not IServerPlayer serverPlayer) return TextCommandResult.Error("Error casting Player as ServerPlayer.");
 
 		string uid = serverPlayer.PlayerUID;
-		BlockPos previousPos = TeleportHandler.GetPlayerPreviousPos(uid);
+		EntityPos previousPos = TeleportHandler.GetPlayerPreviousPos(uid);
 		serverPlayer.Entity.TeleportTo(previousPos);
 
 		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();

@@ -1,5 +1,5 @@
 using Vintagestory.API.Common;
-using Vintagestory.API.MathTools;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 
 using VSTweaks.Networking.Handlers;
@@ -23,7 +23,7 @@ internal static class TPPCommand {
 		if (args.Caller.Player is not IServerPlayer serverPlayer) return TextCommandResult.Error("Error casting Player as ServerPlayer.");
 
 		string uid = serverPlayer.PlayerUID;
-		BlockPos currentPos = serverPlayer.Entity.Pos.AsBlockPos;
+		EntityPos currentPos = serverPlayer.Entity.Pos;
 		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos);
 
 		serverPlayer.Entity.TeleportTo(destination.Entity.Pos);
