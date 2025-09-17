@@ -10,7 +10,7 @@ namespace VSTweaks.Patches;
 [HarmonyPatchCategory("vstweaks.waypoint")]
 internal static class WaypointExtensions {
 	[HarmonyPostfix()]
-	[HarmonyPatch(typeof(WaypointMapComponent), "OnMouseUpOnElement")]
+	[HarmonyPatch(typeof(WaypointMapComponent), nameof(WaypointMapComponent.OnMouseUpOnElement))]
 	public static void WaypointTeleportAndShare(WaypointMapComponent __instance, MouseEvent args, Waypoint ___waypoint, bool ___mouseOver) {
 		if (args.Button == EnumMouseButton.Right || __instance.capi == null) return;
 
