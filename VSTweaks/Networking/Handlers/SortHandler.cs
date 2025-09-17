@@ -50,24 +50,24 @@ internal sealed class SortHandler {
 			ItemSlot[] initial = [.. inventory];
 			if (initial == null) continue;
 
-			(ItemSlot slot, int originalIndex)[] ordered = [.. initial
-				.Select((slot, index) => (slot, originalIndex: index))
-				.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
-				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
-			];
+			bool isBackpack = inventory.InventoryID.Contains("backpack");
+
+			(ItemSlot slot, int originalIndex)[] ordered = GetOrderedInventory(initial, isBackpack);
 
 			int len = ordered.Length;
 			if (len == 0) return;
 
-			int[] destToSource = new int[len];
+			int[] destToSource = new int[initial.Length];
+
+			int startIndex = isBackpack ? 4 : 0;
 
 			for (int dest = 0; dest < len; dest++) {
-				destToSource[dest] = ordered[dest].originalIndex;
+				destToSource[dest + startIndex] = ordered[dest].originalIndex;
 			}
 
-			bool[] visited = new bool[len];
+			bool[] visited = new bool[initial.Length];
 
-			for (int start = 0; start < len; start++) {
+			for (int start = startIndex; start < initial.Length; start++) {
 				if (visited[start]) continue;
 
 				ProcessCycle(inventory, destToSource, visited, start);
@@ -83,6 +83,27 @@ internal sealed class SortHandler {
 		else {
 			IInventory inv = player?.InventoryManager?.GetInventory(inventoryID);
 			return !ShouldSkip(inv) ? new[] { inv } : [];
+		}
+	}
+
+	private static (ItemSlot slot, int originalIndex)[] GetOrderedInventory(ItemSlot[] initial, bool isBackpack) {
+		// Could not find an inventory that does not contain the 4 backpack slots, so skip the first 4
+		if (isBackpack) {
+			return [.. initial
+				.Select((slot, index) => (slot, originalIndex: index))
+				.Skip(4)
+				.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
+				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
+				.Select((t, newIndex) => (t.slot, t.originalIndex))
+				.ToArray()
+			];
+		}
+		else {
+			return [.. initial
+					.Select((slot, index) => (slot, originalIndex: index))
+					.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
+					.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
+			];
 		}
 	}
 
