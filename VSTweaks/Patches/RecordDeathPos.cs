@@ -11,7 +11,7 @@ namespace VSTweaks.Patches;
 internal static class RecordDeathPos {
 	[HarmonyPostfix()]
 	[HarmonyPatch(typeof(EntityPlayer), nameof(EntityPlayer.Die))]
-	public static void SetSpawnOnDidMount(EntityPlayer __instance, EnumDespawnReason reason) {
+	public static void UpdatePreviousLocationOnDeath(EntityPlayer __instance, EnumDespawnReason reason) {
 		if (__instance?.Api?.Side != EnumAppSide.Server && reason != EnumDespawnReason.Death) return;
 		if (!Config.Instance.EnableBackCommand) return;
 
