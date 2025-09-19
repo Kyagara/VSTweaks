@@ -10,7 +10,7 @@ Feedback or bug reports are very much appreciated!
 
 ### Server features
 
-- **Required in the client aswell**
+- **Required on the client**
   - Sort all open inventories or the one being hovered by pressing `R`.
   - `LMB` on waypoint to teleport, `Ctrl+LMB` to share. *(by default requires `tp` permission. Lacks GUI, broadcasts shares to everyone)*
 - **Commands**:
@@ -72,12 +72,11 @@ Default config:
 - Integrate waypoint Teleport/Share in the add/edit waypoint dialog.
 - For disabling exclusive recipes, store a list of recipes instead of looping every GridRecipe. With an option to use the current behaviour.
 - Improve config file by separating client and server configs in different json objects, will require adding migrations.
-  - On the topic of config file, I was thinking of making a crude config editor for all files in the ModConfig, but the game does not allow mods to be loaded in the main menu, which is where it would be useful the most.
+  - On the topic of config file, I was thinking of making a crude config editor for all files in the ModConfig, however, the game does not allow mods to be loaded in the main menu, which is where it would be useful the most.
 - Port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks). Some that might be useful are:
   - Music selection
   - Autowalk
   - Increase/decrease zoom with mousewheel
-  - Send current coordinates in chat
   - Link item in chat (maybe also let people add descriptions to items)
 
 ## Known Issues

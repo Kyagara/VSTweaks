@@ -47,8 +47,8 @@ internal sealed class SortHandler {
 		IEnumerable<IInventory> inventories = GetInventories(fromPlayer, networkMessage.InventoryID);
 
 		foreach (IInventory inventory in inventories) {
+			if (inventory?.Count == 0) continue;
 			ItemSlot[] initial = [.. inventory];
-			if (initial == null) continue;
 
 			bool isBackpack = inventory.InventoryID.Contains("backpack");
 
@@ -80,31 +80,29 @@ internal sealed class SortHandler {
 			List<IInventory> invs = player?.InventoryManager?.OpenedInventories;
 			return invs.Where(inv => !ShouldSkip(inv)) ?? [];
 		}
-		else {
-			IInventory inv = player?.InventoryManager?.GetInventory(inventoryID);
-			return !ShouldSkip(inv) ? new[] { inv } : [];
-		}
+
+		IInventory inv = player?.InventoryManager?.GetInventory(inventoryID);
+		return !ShouldSkip(inv) ? new[] { inv } : [];
 	}
 
 	private static (ItemSlot slot, int originalIndex)[] GetOrderedInventory(ItemSlot[] initial, bool isBackpack) {
 		// Could not find an inventory that does not contain the 4 backpack slots, so skip the first 4
 		if (isBackpack) {
 			return [.. initial
-				.Select((slot, index) => (slot, originalIndex: index))
-				.Skip(4)
-				.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
-				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
-				.Select((t, newIndex) => (t.slot, t.originalIndex))
-				.ToArray()
-			];
-		}
-		else {
-			return [.. initial
 					.Select((slot, index) => (slot, originalIndex: index))
+					.Skip(4)
 					.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
 					.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
+					.Select((t, newIndex) => (t.slot, t.originalIndex))
+					.ToArray()
 			];
 		}
+
+		return [.. initial
+				.Select((slot, index) => (slot, originalIndex: index))
+				.OrderBy(t => t.slot?.Itemstack?.GetName() == null)
+				.ThenBy(t => t.slot?.Itemstack?.GetName(), StringComparer.OrdinalIgnoreCase)
+		];
 	}
 
 	private static void ProcessCycle(IInventory inventory, int[] destToSource, bool[] visited, int start) {
@@ -122,9 +120,9 @@ internal sealed class SortHandler {
 			int sourceIndex = destToSource[current];
 			if (sourceIndex == current) break;
 
-			ItemSlot[] snapshot = [.. inventory];
-			if (snapshot == null) break;
+			if (inventory?.Count == 0) break;
 
+			ItemSlot[] snapshot = [.. inventory];
 			ItemSlot sourceSlot = snapshot[sourceIndex];
 
 			inventory.TryFlipItems(current, sourceSlot);

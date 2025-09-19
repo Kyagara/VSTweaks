@@ -12,11 +12,13 @@ using VSTweaks.Recipes;
 namespace VSTweaks;
 
 public class VSTweaks : ModSystem {
+	public const string SortChannelName = "vstweaks.sort";
 	public const string WaypointTeleportChannelName = "vstweaks.waypoint_teleport";
 	public const string WaypointShareChannelName = "vstweaks.waypoint_share";
-	public const string SortChannelName = "vstweaks.sort";
 
 	public const string ZoomHotKeyCode = "vstweaks.zoom";
+
+	AssetLocation menuButtonPressSFX;
 
 	private ICoreClientAPI capi;
 
@@ -117,10 +119,13 @@ public class VSTweaks : ModSystem {
 	private void PlaySoundOnChatMessage(int groupId, string message, EnumChatType chattype, string data) {
 		if (capi?.World?.Player == null) return;
 
-		IAsset sfx = capi.Assets.TryGet("sounds/menubutton_press");
-		if (sfx == null) return;
+		if (menuButtonPressSFX == null) {
+			IAsset sfx = capi.Assets.TryGet("game:sounds/menubutton_press.ogg");
+			if (sfx == null) return;
+			menuButtonPressSFX = sfx.Location;
+		}
 
-		capi.World.PlaySoundAt(sfx.Location, capi.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
+		capi.World.PlaySoundFor(menuButtonPressSFX, capi.World.Player, volume: Config.Instance.ChatMessageSoundVolume);
 	}
 
 	public override void Dispose() {

@@ -3,6 +3,7 @@ using System;
 using Vintagestory.API.Client;
 
 namespace VSTweaks.Hotkeys;
+
 // From https://github.com/chriswa/vsmod-ZoomButton
 internal sealed class ZoomHotkey {
 	private const string FIELD_OF_VIEW_SETTING = "fieldOfView";
