@@ -8,7 +8,7 @@ using VSTweaks.Networking.Handlers;
 namespace VSTweaks.Patches;
 
 [HarmonyPatchCategory("vstweaks.back")]
-internal static class RecordDeathPos {
+internal static class RecordPreviousPositions {
 	[HarmonyPostfix()]
 	[HarmonyPatch(typeof(EntityPlayer), nameof(EntityPlayer.Die))]
 	public static void UpdatePreviousLocationOnDeath(EntityPlayer __instance, EnumDespawnReason reason) {

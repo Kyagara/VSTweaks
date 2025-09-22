@@ -19,7 +19,7 @@ Feedback or bug reports are very much appreciated!
   - Teleport to your previous location before a teleport or death using `/back`. *(by default requires `chat` permission)*
 - Set spawn point when sleeping in a bed.
 - Turn Firewood into 3 sticks using any saw.
-- Disable exclusive crafting *(Sewing kit and clothes from Tailor, Sling from Malefactor and so on)*.
+- Disable exclusive crafting. *(Sewing kit and clothes from Tailor, Sling from Malefactor and so on)*
 
 ### Client features
 
