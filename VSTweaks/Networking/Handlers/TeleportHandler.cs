@@ -14,9 +14,8 @@ using VSTweaks.Networking.Packets;
 namespace VSTweaks.Networking.Handlers;
 
 internal sealed class TeleportHandler {
-	private static readonly ConcurrentDictionary<string, EntityPos> playerPreviousPos = new();
-
 	private static ICoreServerAPI sapi;
+	private static readonly ConcurrentDictionary<string, EntityPos> playerPreviousPos = new();
 
 	private TeleportHandler() { }
 	private static readonly Lazy<TeleportHandler> _lazy = new(() => new TeleportHandler());
@@ -33,11 +32,11 @@ internal sealed class TeleportHandler {
 		}
 
 		string uid = fromPlayer.PlayerUID;
-		EntityPos currentPos = fromPlayer.Entity.Pos;
-		UpdatePlayerPreviousPos(uid, currentPos);
+		EntityPos previousPos = fromPlayer.Entity.Pos;
+		UpdatePlayerPreviousPos(uid, previousPos);
 
-		BlockPos pos = networkMessage.Pos;
-		fromPlayer.Entity.TeleportTo(pos);
+		BlockPos newPos = networkMessage.Pos;
+		fromPlayer.Entity.TeleportTo(newPos);
 
 		if (!Config.Instance.EnableFeedback) return;
 		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Teleported to waypoint.", EnumChatType.Notification);
@@ -59,14 +58,10 @@ internal sealed class TeleportHandler {
 	}
 
 	public static EntityPos GetPlayerPreviousPos(string uid) {
-		return playerPreviousPos.Get(uid);
+		return playerPreviousPos.Get(uid, null);
 	}
 
 	public static void UpdatePlayerPreviousPos(string uid, EntityPos pos) {
-		playerPreviousPos.AddOrUpdate(
-			key: uid,
-			addValueFactory: (key) => pos,
-			updateValueFactory: (key, _) => pos
-		);
+		playerPreviousPos.AddOrUpdate(uid, pos, (key, _) => pos);
 	}
 }

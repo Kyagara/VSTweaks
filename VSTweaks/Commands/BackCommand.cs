@@ -20,6 +20,8 @@ internal static class BackCommand {
 
 		string uid = serverPlayer.PlayerUID;
 		EntityPos previousPos = TeleportHandler.GetPlayerPreviousPos(uid);
+		if (previousPos == null) return TextCommandResult.Error("No previous position set.");
+
 		serverPlayer.Entity.TeleportTo(previousPos);
 
 		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();

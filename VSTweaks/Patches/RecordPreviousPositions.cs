@@ -12,12 +12,12 @@ internal static class RecordPreviousPositions {
 	[HarmonyPostfix()]
 	[HarmonyPatch(typeof(EntityPlayer), nameof(EntityPlayer.Die))]
 	public static void UpdatePreviousLocationOnDeath(EntityPlayer __instance, EnumDespawnReason reason) {
-		if (__instance?.Api?.Side != EnumAppSide.Server && reason != EnumDespawnReason.Death) return;
 		if (!Config.Instance.EnableBackCommand) return;
+		if (__instance?.Api?.Side != EnumAppSide.Server && reason != EnumDespawnReason.Death) return;
 
 		string uid = __instance.PlayerUID;
-		EntityPos pos = __instance.Pos;
+		EntityPos previousPos = __instance.Pos;
 
-		TeleportHandler.UpdatePlayerPreviousPos(uid, pos);
+		TeleportHandler.UpdatePlayerPreviousPos(uid, previousPos);
 	}
 }
