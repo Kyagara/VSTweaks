@@ -62,6 +62,6 @@ internal sealed class TeleportHandler {
 	}
 
 	public static void UpdatePlayerPreviousPos(string uid, EntityPos pos) {
-		playerPreviousPos.AddOrUpdate(uid, pos, (key, _) => pos);
+		playerPreviousPos.AddOrUpdate(uid, pos, (key, _) => pos.Copy());
 	}
 }
