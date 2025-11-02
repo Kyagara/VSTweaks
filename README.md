@@ -19,25 +19,24 @@ Feedback or bug reports are very much appreciated!
   - Teleport to your previous location before a teleport or death using `/back`. *(by default requires `chat` permission)*
 - Set spawn point when sleeping in a bed.
 - Turn Firewood into 3 sticks using any saw.
-- Disable exclusive crafting. *(Sewing kit and clothes from Tailor, Sling from Malefactor and so on)*
 
 ### Client features
 
 - Zoom with `Z`.
 - Sound on new chat messages.
 
-> *The Zoom logic was based on [vsmod-ZoomButton](https://github.com/chriswa/vsmod-ZoomButton) by [chriswa](https://github.com/chriswa).*
+> The Zoom logic was based on [vsmod-ZoomButton](https://github.com/chriswa/vsmod-ZoomButton) by [chriswa](https://github.com/chriswa).
 
 ## Configuration
 
-All features can be configured after running the game once and will be stored in the default config path.
+> All features can be configured after running the game once and will be stored in the default config path.
 
 Default config:
 
 ```jsonc
 {
   // First config release (v0.2.0) had no Version field.
-  "Version": 6,
+  "Version": 7,
   "EnableZoom": true,
   // Lower values = zooms farther.
   "MaxZoom": 20,
@@ -46,7 +45,6 @@ Default config:
   "EnableSticksFromFirewoodRecipe": true,
   "EnableNewChatMessageSound": true,
   "ChatMessageSoundVolume": 0.3,
-  "DisableExclusiveCrafting": true,
   // When enabled, commands will output succesful results.
   // Features will still display handled errors when they happen even if disabled.
   "EnableFeedback": true,
@@ -70,16 +68,15 @@ Default config:
 - Rewrite zoom.
 - "Trashcan" logic, inventory slot or hotkey that you can press and delete items.
 - Integrate waypoint Teleport/Share in the add/edit waypoint dialog.
-- For disabling exclusive recipes, store a list of recipes instead of looping every GridRecipe. With an option to use the current behaviour.
 - Improve config file by separating client and server configs in different json objects, will require adding migrations.
   - On the topic of config file, I was thinking of making a crude config editor for all files in the ModConfig, however, the game does not allow mods to be loaded in the main menu, which is where it would be useful the most.
 - Port some features from my old Minecraft Mods, [Fred](https://github.com/Kyagara/Fred) and [CoopTweaks](https://github.com/Kyagara/CoopTweaks). Some that might be useful are:
-  - Music selection
+  - Music control (skipping, printing current song, track selection)
   - Autowalk
   - Increase/decrease zoom with mousewheel
   - Link item in chat (maybe also let people add descriptions to items)
 
 ## Known Issues
 
-- With exclusive crafting disabled, the class selection menu will still display a `Exclusive craftable x` text.
 - Using `/tp` does not set a previous location for the `/back` command yet.
+- `/back` might not work as expected before using `/tpp`, `/home`, teleport to waypoint by clicking or dying for the first time.

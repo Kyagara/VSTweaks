@@ -7,7 +7,7 @@ namespace VSTweaks;
 
 public class Config {
 	// First config release (v0.2.0) had no Version field.
-	public int Version { get; private set; } = 6;
+	public int Version { get; private set; } = 7;
 
 	public bool EnableZoom { get; private set; } = true;
 	// Lower values = zooms farther.
@@ -24,7 +24,6 @@ public class Config {
 	// Features will still display errors when they happen if disabled.
 	public bool EnableFeedback { get; private set; } = true;
 
-	public bool DisableExclusiveCrafting { get; private set; } = true;
 	public bool EnableSort { get; private set; } = true;
 	public bool EnableSetSpawnOnSleep { get; private set; } = true;
 	public bool EnableWaypointTeleport { get; private set; } = true;
@@ -72,7 +71,6 @@ public class Config {
 
 		EnableFeedback = config["EnableFeedback"].AsBool(EnableFeedback);
 
-		DisableExclusiveCrafting = config["DisableExclusiveCrafting"].AsBool(DisableExclusiveCrafting);
 		EnableSort = config["EnableSort"].AsBool(EnableSort);
 		EnableSetSpawnOnSleep = config["EnableSetSpawnOnSleep"].AsBool(EnableSetSpawnOnSleep);
 		EnableWaypointTeleport = config["EnableWaypointTeleport"].AsBool(EnableWaypointTeleport);

@@ -61,20 +61,6 @@ public class VSTweaks : ModSystem {
 		}
 	}
 
-	public override void AssetsFinalize(ICoreAPI api) {
-		if (api.Side == EnumAppSide.Client) return;
-
-		if (Config.Instance.DisableExclusiveCrafting) {
-			for (int i = 0; i < api.World.GridRecipes.Count; i++) {
-				GridRecipe recipe = api.World.GridRecipes[i];
-				if (recipe == null || recipe.RequiresTrait == null) continue;
-
-				// Very primitive, might cause balancing issues with other mods.
-				api.World.GridRecipes[i].RequiresTrait = null;
-			}
-		}
-	}
-
 	public override void StartClientSide(ICoreClientAPI api) {
 		capi = api;
 		Config config = Config.Instance;
