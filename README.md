@@ -1,6 +1,6 @@
 ## VSTweaks
 
-I wanted to learn C# and some weeks ago I started playing Vintage Story, so I decided to port some features of my old Minecraft mods. My goal is to make this a collection of features and let people customize as much as possible to keep compatibility with other mods, allowing for other mods that implement similar features to be used.
+The goal of this mod is to make it a collection of features similar to my old Minecraft mods and let people customize it as much as possible to keep compatibility with other mods, allowing for other mods that implement similar features to be used.
 
 This mod focuses more on code features (mechanics, commands, etc) rather than adding content (blocks, textures, etc).
 
@@ -12,7 +12,7 @@ Feedback or bug reports are very much appreciated!
 
 - **Required on the client**
   - Sort all open inventories or the one being hovered by pressing `R`.
-  - `LMB` on waypoint to teleport, `Ctrl+LMB` to share. *(by default requires `tp` permission. Lacks GUI, broadcasts shares to everyone)*
+  - `LMB` on waypoint to teleport, `Ctrl+LMB` to share. *(by default requires `tp` permission. Lacks GUI, shares in general chat)*
 - **Commands**:
   - Teleport to someone using `/tpp <player>`. *(by default requires `tp` permission)*
   - Teleport to your spawn point using `/home`. *(by default requires `chat` permission)*
@@ -29,9 +29,7 @@ Feedback or bug reports are very much appreciated!
 
 ## Configuration
 
-> All features can be configured after running the game once and will be stored in the default config path.
-
-Default config:
+Default configuration:
 
 ```jsonc
 {
@@ -78,5 +76,5 @@ Default config:
 
 ## Known Issues
 
-- Using `/tp` does not set a previous location for the `/back` command yet.
-- `/back` might not work as expected before using `/tpp`, `/home`, teleport to waypoint by clicking or dying for the first time.
+- Using the vanilla `/tp` command does not set a previous location for the `/back` command.
+- `/back` might not work as expected before having set a previous position for the first time (using `/tpp`, `/home`, teleport to waypoint by clicking or dying).
