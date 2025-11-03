@@ -20,7 +20,7 @@ static class HomeCommand {
 
 		string uid = serverPlayer.PlayerUID;
 		EntityPos currentPos = serverPlayer.Entity.Pos;
-		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos);
+		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos.Copy());
 
 		FuzzyEntityPos spawnPos = serverPlayer.GetSpawnPosition(false);
 		serverPlayer.Entity.TeleportTo(spawnPos);

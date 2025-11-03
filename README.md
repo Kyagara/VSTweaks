@@ -77,4 +77,3 @@ Default configuration:
 ## Known Issues
 
 - Using the vanilla `/tp` command does not set a previous location for the `/back` command.
-- `/back` might not work as expected before having set a previous position for the first time (using `/tpp`, `/home`, teleport to waypoint by clicking or dying).

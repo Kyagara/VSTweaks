@@ -18,6 +18,6 @@ static class RecordPreviousPositions {
 		string uid = __instance.PlayerUID;
 		EntityPos previousPos = __instance.Pos;
 
-		TeleportHandler.UpdatePlayerPreviousPos(uid, previousPos);
+		TeleportHandler.UpdatePlayerPreviousPos(uid, previousPos.Copy());
 	}
 }

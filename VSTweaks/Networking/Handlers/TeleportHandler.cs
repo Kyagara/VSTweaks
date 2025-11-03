@@ -19,6 +19,7 @@ static class TeleportHandler {
 
 	public static void InitializeServer(ICoreServerAPI api) {
 		sapi = api;
+		playerPreviousPos.Clear();
 	}
 
 	public static void OnClientWaypointTeleport(IServerPlayer fromPlayer, WaypointTeleportPacket networkMessage) {
@@ -29,7 +30,7 @@ static class TeleportHandler {
 
 		string uid = fromPlayer.PlayerUID;
 		EntityPos previousPos = fromPlayer.Entity.Pos;
-		UpdatePlayerPreviousPos(uid, previousPos);
+		UpdatePlayerPreviousPos(uid, previousPos.Copy());
 
 		BlockPos newPos = networkMessage.Pos;
 		fromPlayer.Entity.TeleportTo(newPos);
@@ -57,7 +58,8 @@ static class TeleportHandler {
 		return playerPreviousPos.Get(uid, null);
 	}
 
+	// Needs to send a .Copy() of EntityPos
 	public static void UpdatePlayerPreviousPos(string uid, EntityPos pos) {
-		playerPreviousPos.AddOrUpdate(uid, pos, (key, _) => pos.Copy());
+		playerPreviousPos.AddOrUpdate(uid, pos, (key, _) => pos);
 	}
 }

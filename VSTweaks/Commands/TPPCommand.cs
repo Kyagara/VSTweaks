@@ -24,7 +24,7 @@ static class TPPCommand {
 
 		string uid = fromPlayer.PlayerUID;
 		EntityPos currentPos = fromPlayer.Entity.Pos;
-		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos);
+		TeleportHandler.UpdatePlayerPreviousPos(uid, currentPos.Copy());
 
 		fromPlayer.Entity.TeleportTo(toPlayer.Entity.Pos);
 
