@@ -4,7 +4,7 @@ using Vintagestory.API.Common;
 
 namespace VSTweaks.Recipes;
 
-internal sealed class SticksFromFirewoodRecipe : GridRecipe {
+sealed class SticksFromFirewoodRecipe : GridRecipe {
 	public SticksFromFirewoodRecipe(IWorldAccessor world) {
 		Name = "vstweaks.recipes.grid.stick_from_firewood";
 		IngredientPattern = "T,F";

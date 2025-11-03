@@ -8,7 +8,7 @@ using Vintagestory.API.MathTools;
 namespace VSTweaks.Patches;
 
 [HarmonyPatchCategory("vstweaks.bed")]
-internal static class SetSpawnOnSleep {
+static class SetSpawnOnSleep {
 	[HarmonyPostfix()]
 	[HarmonyPatch(typeof(BlockEntityBed), nameof(BlockEntityBed.DidMount))]
 	public static void SetSpawnOnDidMount(BlockEntityBed __instance, EntityAgent entityAgent) {
@@ -26,7 +26,7 @@ internal static class SetSpawnOnSleep {
 
 		serverPlayer.SetSpawnPosition(newPos);
 
-		if (!Config.Instance.EnableFeedback) return;
+		if (!Config.EnableFeedback) return;
 		serverPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Spawn point set.", EnumChatType.Notification);
 	}
 }

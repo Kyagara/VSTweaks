@@ -6,12 +6,12 @@ using VSTweaks.Networking.Handlers;
 
 namespace VSTweaks.Commands;
 
-internal static class BackCommand {
+static class BackCommand {
 	public static void Register(ICoreServerAPI api) {
 		api.ChatCommands.Create("back")
 		   .WithDescription("Teleport to your previous location before a teleport or death.")
 		   .RequiresPlayer()
-		   .RequiresPrivilege(Config.Instance.BackCommandPerm)
+		   .RequiresPrivilege(Config.BackCommandPerm)
 		   .HandleWith(OnBackCommand);
 	}
 
@@ -24,7 +24,7 @@ internal static class BackCommand {
 
 		serverPlayer.Entity.TeleportTo(previousPos);
 
-		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
+		if (!Config.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success("Teleported to your previous location.");
 	}
 }

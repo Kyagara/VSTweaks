@@ -13,21 +13,17 @@ using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers;
 
-internal sealed class TeleportHandler {
+static class TeleportHandler {
 	private static ICoreServerAPI sapi;
 	private static readonly ConcurrentDictionary<string, EntityPos> playerPreviousPos = new();
-
-	private TeleportHandler() { }
-	private static readonly Lazy<TeleportHandler> _lazy = new(() => new TeleportHandler());
-	public static TeleportHandler Instance => _lazy.Value;
 
 	public static void InitializeServer(ICoreServerAPI api) {
 		sapi = api;
 	}
 
 	public static void OnClientWaypointTeleport(IServerPlayer fromPlayer, WaypointTeleportPacket networkMessage) {
-		if (!fromPlayer.Privileges.Contains(Config.Instance.WaypointTeleportPerm)) {
-			fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"You do not have the required permission ({Config.Instance.WaypointTeleportPerm}).", EnumChatType.Notification);
+		if (!fromPlayer.Privileges.Contains(Config.WaypointTeleportPerm)) {
+			fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, $"You do not have the required permission ({Config.WaypointTeleportPerm}).", EnumChatType.Notification);
 			return;
 		}
 
@@ -38,7 +34,7 @@ internal sealed class TeleportHandler {
 		BlockPos newPos = networkMessage.Pos;
 		fromPlayer.Entity.TeleportTo(newPos);
 
-		if (!Config.Instance.EnableFeedback) return;
+		if (!Config.EnableFeedback) return;
 		fromPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "Teleported to waypoint.", EnumChatType.Notification);
 	}
 

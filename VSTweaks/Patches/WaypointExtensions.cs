@@ -9,7 +9,7 @@ using VSTweaks.Networking.Packets;
 namespace VSTweaks.Patches;
 
 [HarmonyPatchCategory("vstweaks.waypoint")]
-internal static class WaypointExtensions {
+static class WaypointExtensions {
 	[HarmonyPostfix()]
 	[HarmonyPatch(typeof(WaypointMapComponent), nameof(WaypointMapComponent.OnMouseUpOnElement))]
 	public static void WaypointTeleportAndShare(WaypointMapComponent __instance, MouseEvent args, Waypoint ___waypoint, bool ___mouseOver) {
@@ -27,14 +27,14 @@ internal static class WaypointExtensions {
 		string icon = ___waypoint.Icon;
 		int color = ___waypoint.Color;
 
-		if (Config.Instance.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
+		if (Config.EnableWaypointShare && __instance.capi.World.Player.Entity.Controls.CtrlKey) {
 			IClientNetworkChannel shareChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointShareChannelName);
 			if (shareChannel == null || !shareChannel.Connected) return;
 			shareChannel.SendPacket(new WaypointSharePacket() { Pos = destination, Title = title, Icon = icon, Color = color });
 			return;
 		}
 
-		if (Config.Instance.EnableWaypointTeleport) {
+		if (Config.EnableWaypointTeleport) {
 			IClientNetworkChannel teleportChannel = __instance.capi.Network.GetChannel(VSTweaks.WaypointTeleportChannelName);
 			if (teleportChannel == null || !teleportChannel.Connected) return;
 			teleportChannel.SendPacket(new WaypointTeleportPacket() { Pos = destination });

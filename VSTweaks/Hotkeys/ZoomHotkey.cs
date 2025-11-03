@@ -5,26 +5,22 @@ using Vintagestory.API.Client;
 namespace VSTweaks.Hotkeys;
 
 // From https://github.com/chriswa/vsmod-ZoomButton
-internal sealed class ZoomHotkey {
+static class ZoomHotkey {
 	private const string FIELD_OF_VIEW_SETTING = "fieldOfView";
 	private const string MOUSE_SENSITIVITY_SETTING = "mouseSensivity";
 
-	private int originalFov;
-	private int originalSensitivity;
-	private float zoomState;
-	private bool isZooming;
+	private static int originalFov;
+	private static int originalSensitivity;
+	private static float zoomState;
+	private static bool isZooming;
 
-	private ICoreClientAPI capi;
+	private static ICoreClientAPI capi;
 
-	private ZoomHotkey() { }
-	private static readonly Lazy<ZoomHotkey> _instance = new(() => new ZoomHotkey());
-	public static ZoomHotkey Instance => _instance.Value;
-
-	public void InitializeClient(ICoreClientAPI api) {
+	public static void InitializeClient(ICoreClientAPI api) {
 		capi = api;
 	}
 
-	public void OnZoomHeld(float dt) {
+	public static void OnZoomHeld(float dt) {
 		HotKey hotkey = capi.Input.GetHotKeyByCode(VSTweaks.ZoomHotKeyCode);
 		bool isHotKeyPressed = capi.Input.KeyboardKeyState[hotkey.CurrentMapping.KeyCode];
 
@@ -35,7 +31,7 @@ internal sealed class ZoomHotkey {
 				isZooming = true;
 			}
 
-			if (Config.Instance.ZoomLerp)
+			if (Config.ZoomLerp)
 				zoomState = Math.Min(1, zoomState + dt / 0.2F);
 			else
 				zoomState = 1;
@@ -43,7 +39,7 @@ internal sealed class ZoomHotkey {
 			UpdateSettings();
 		}
 		else if (!isHotKeyPressed && zoomState > 0) {
-			if (Config.Instance.ZoomLerp) {
+			if (Config.ZoomLerp) {
 				zoomState = Math.Max(0, zoomState - dt / 0.1F);
 
 				if (zoomState.Equals(0)) {
@@ -59,8 +55,8 @@ internal sealed class ZoomHotkey {
 		}
 	}
 
-	private void UpdateSettings() {
-		capi.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, Config.Instance.MaxZoom, zoomState);
+	private static void UpdateSettings() {
+		capi.Settings.Int[FIELD_OF_VIEW_SETTING] = Lerp(originalFov, Config.MaxZoom, zoomState);
 		capi.Settings.Int[MOUSE_SENSITIVITY_SETTING] = Lerp(originalSensitivity, originalSensitivity * 0.5F, zoomState);
 	}
 

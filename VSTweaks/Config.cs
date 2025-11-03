@@ -1,52 +1,45 @@
-using System;
-
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
 namespace VSTweaks;
 
-public class Config {
+class Config {
 	// First config release (v0.2.0) had no Version field.
-	public int Version { get; private set; } = 7;
+	public static int Version { get; private set; } = 7;
 
-	public bool EnableZoom { get; private set; } = true;
-	// Lower values = zooms farther.
-	public int MaxZoom { get; private set; } = 20;
-	// Enables a smooth 'transition' from current FOV to the zoomed FOV.
-	public bool ZoomLerp { get; private set; } = true;
+	public static bool EnableZoom { get; private set; } = true;
+	// Low staticer values = zooms farther.
+	public static int MaxZoom { get; private set; } = 20;
+	// Ena staticbles a smooth 'transition' from current FOV to the zoomed FOV.
+	public static bool ZoomLerp { get; private set; } = true;
 
-	public bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
+	public static bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
 
-	public bool EnableNewChatMessageSound { get; private set; } = true;
-	public float ChatMessageSoundVolume { get; private set; } = 0.3F;
+	public static bool EnableNewChatMessageSound { get; private set; } = true;
+	public static float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
-	// When enabled, commands will output succesful results.
-	// Features will still display errors when they happen if disabled.
-	public bool EnableFeedback { get; private set; } = true;
+	// Whe staticn enabled, commands will output succesful results.
+	// Fea statictures will still display errors when they happen if disabled.
+	public static bool EnableFeedback { get; private set; } = true;
 
-	public bool EnableSort { get; private set; } = true;
-	public bool EnableSetSpawnOnSleep { get; private set; } = true;
-	public bool EnableWaypointTeleport { get; private set; } = true;
-	public bool EnableWaypointShare { get; private set; } = true;
+	public static bool EnableSort { get; private set; } = true;
+	public static bool EnableSetSpawnOnSleep { get; private set; } = true;
+	public static bool EnableWaypointTeleport { get; private set; } = true;
+	public static bool EnableWaypointShare { get; private set; } = true;
 
-	public bool EnableTPPCommand { get; private set; } = true;
-	public bool EnableHomeCommand { get; private set; } = true;
-	public bool EnableBackCommand { get; private set; } = true;
+	public static bool EnableTPPCommand { get; private set; } = true;
+	public static bool EnableHomeCommand { get; private set; } = true;
+	public static bool EnableBackCommand { get; private set; } = true;
 
-	public string WaypointTeleportPerm { get; private set; } = "tp";
-	public string TPPCommandPerm { get; private set; } = "tp";
-	public string HomeCommandPerm { get; private set; } = "chat";
-	public string BackCommandPerm { get; private set; } = "chat";
+	public static string WaypointTeleportPerm { get; private set; } = "tp";
+	public static string TPPCommandPerm { get; private set; } = "tp";
+	public static string HomeCommandPerm { get; private set; } = "chat";
+	public static string BackCommandPerm { get; private set; } = "chat";
 
-	private Config() { }
-	private static readonly Lazy<Config> _lazy = new(() => new Config());
-	public static Config Instance => _lazy.Value;
-
-	public void Initialize(ICoreAPI api, ILogger logger) {
+	public static void Initialize(ICoreAPI api, ILogger logger) {
 		JsonObject config = api.LoadModConfig("vstweaks.json");
 		if (config == null) {
 			logger.Log(EnumLogType.Warning, "Config file not found, generating a new one.");
-			Save(api);
 			return;
 		}
 
@@ -56,10 +49,9 @@ public class Config {
 		}
 
 		UpdateState(config);
-		Save(api);
 	}
 
-	private void UpdateState(JsonObject config) {
+	private static void UpdateState(JsonObject config) {
 		EnableZoom = config["EnableZoom"].AsBool(EnableZoom);
 		MaxZoom = config["MaxZoom"].AsInt(MaxZoom);
 		ZoomLerp = config["ZoomLerp"].AsBool(ZoomLerp);

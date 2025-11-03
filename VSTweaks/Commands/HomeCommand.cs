@@ -6,12 +6,12 @@ using VSTweaks.Networking.Handlers;
 
 namespace VSTweaks.Commands;
 
-internal static class HomeCommand {
+static class HomeCommand {
 	public static void Register(ICoreServerAPI api) {
 		api.ChatCommands.Create("home")
 		   .WithDescription("Teleport back to your spawn point.")
 		   .RequiresPlayer()
-		   .RequiresPrivilege(Config.Instance.HomeCommandPerm)
+		   .RequiresPrivilege(Config.HomeCommandPerm)
 		   .HandleWith(OnHomeCommand);
 	}
 
@@ -25,7 +25,7 @@ internal static class HomeCommand {
 		FuzzyEntityPos spawnPos = serverPlayer.GetSpawnPosition(false);
 		serverPlayer.Entity.TeleportTo(spawnPos);
 
-		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
+		if (!Config.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success("Teleported to your spawn point.");
 	}
 }

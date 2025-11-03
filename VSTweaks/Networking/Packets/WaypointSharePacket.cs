@@ -5,7 +5,7 @@ using Vintagestory.API.MathTools;
 namespace VSTweaks.Networking.Packets;
 
 [ProtoContract]
-internal class WaypointSharePacket {
+class WaypointSharePacket {
 	[ProtoMember(1)]
 	public BlockPos Pos;
 

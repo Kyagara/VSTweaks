@@ -6,27 +6,25 @@ using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking;
 
-internal class ServerSystem : ModSystem {
+class ServerSystem : ModSystem {
 	public override bool ShouldLoad(EnumAppSide forSide) => forSide == EnumAppSide.Server;
 
 	public override void StartServerSide(ICoreServerAPI api) {
-		Config config = Config.Instance;
-
-		if (config.EnableSort) {
+		if (Config.EnableSort) {
 			api.Network.GetChannel(VSTweaks.SortChannelName)
 			   .SetMessageHandler<SortPacket>(SortHandler.OnClientSortPacket);
 		}
 
-		if (config.EnableWaypointTeleport || config.EnableWaypointShare || config.EnableBackCommand) {
+		if (Config.EnableWaypointTeleport || Config.EnableWaypointShare || Config.EnableBackCommand) {
 			TeleportHandler.InitializeServer(api);
 		}
 
-		if (config.EnableWaypointTeleport) {
+		if (Config.EnableWaypointTeleport) {
 			api.Network.GetChannel(VSTweaks.WaypointTeleportChannelName)
 			   .SetMessageHandler<WaypointTeleportPacket>(TeleportHandler.OnClientWaypointTeleport);
 		}
 
-		if (config.EnableWaypointShare) {
+		if (Config.EnableWaypointShare) {
 			api.Network.GetChannel(VSTweaks.WaypointShareChannelName)
 			   .SetMessageHandler<WaypointSharePacket>(TeleportHandler.OnClientWaypointShare);
 		}

@@ -10,20 +10,16 @@ using VSTweaks.Networking.Packets;
 
 namespace VSTweaks.Networking.Handlers;
 
-internal sealed class SortHandler {
-	private ICoreClientAPI capi;
-	private IClientNetworkChannel sortChannel;
+static class SortHandler {
+	private static ICoreClientAPI capi;
+	private static IClientNetworkChannel sortChannel;
 
-	private SortHandler() { }
-	private static readonly Lazy<SortHandler> _lazy = new(() => new SortHandler());
-	public static SortHandler Instance => _lazy.Value;
-
-	public void InitializeClient(ICoreClientAPI api) {
+	public static void InitializeClient(ICoreClientAPI api) {
 		capi = api;
 		sortChannel = api.Network.GetChannel(VSTweaks.SortChannelName);
 	}
 
-	public bool SendSortPacket(KeyCombination _keyCombo) {
+	public static bool SendSortPacket(KeyCombination _keyCombo) {
 		if (!sortChannel.Connected) return true;
 
 		// The player is not hovering any particular storage,

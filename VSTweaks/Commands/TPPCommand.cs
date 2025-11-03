@@ -6,13 +6,13 @@ using VSTweaks.Networking.Handlers;
 
 namespace VSTweaks.Commands;
 
-internal static class TPPCommand {
+static class TPPCommand {
 	public static void Register(ICoreServerAPI api) {
 		api.ChatCommands.Create("tpp")
 		   .WithDescription("Teleport to a player.")
 		   .WithArgs(new OnlinePlayerArgParser("destination", api, true))
 		   .RequiresPlayer()
-		   .RequiresPrivilege(Config.Instance.TPPCommandPerm)
+		   .RequiresPrivilege(Config.TPPCommandPerm)
 		   .HandleWith(OnTeleportCommand);
 	}
 
@@ -28,7 +28,7 @@ internal static class TPPCommand {
 
 		fromPlayer.Entity.TeleportTo(toPlayer.Entity.Pos);
 
-		if (!Config.Instance.EnableFeedback) return TextCommandResult.Success();
+		if (!Config.EnableFeedback) return TextCommandResult.Success();
 		return TextCommandResult.Success($"Teleported to {toPlayer.PlayerName}.");
 	}
 }
