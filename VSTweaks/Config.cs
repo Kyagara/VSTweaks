@@ -3,14 +3,14 @@ using Vintagestory.API.Datastructures;
 
 namespace VSTweaks;
 
-class Config {
+static class Config {
 	// First config release (v0.2.0) had no Version field.
 	public static int Version { get; private set; } = 7;
 
 	public static bool EnableZoom { get; private set; } = true;
-	// Low staticer values = zooms farther.
+	// Lower values = zooms farther.
 	public static int MaxZoom { get; private set; } = 20;
-	// Ena staticbles a smooth 'transition' from current FOV to the zoomed FOV.
+	// Enables a smooth 'transition' from current FOV to the zoomed FOV.
 	public static bool ZoomLerp { get; private set; } = true;
 
 	public static bool EnableSticksFromFirewoodRecipe { get; private set; } = true;
@@ -18,8 +18,8 @@ class Config {
 	public static bool EnableNewChatMessageSound { get; private set; } = true;
 	public static float ChatMessageSoundVolume { get; private set; } = 0.3F;
 
-	// Whe staticn enabled, commands will output succesful results.
-	// Fea statictures will still display errors when they happen if disabled.
+	// When enabled, commands will output succesful results.
+	// Features will still display errors when they happen if disabled.
 	public static bool EnableFeedback { get; private set; } = true;
 
 	public static bool EnableSort { get; private set; } = true;
@@ -40,6 +40,7 @@ class Config {
 		JsonObject config = api.LoadModConfig("vstweaks.json");
 		if (config == null) {
 			logger.Log(EnumLogType.Warning, "Config file not found, generating a new one.");
+			Save(api);
 			return;
 		}
 
@@ -49,6 +50,7 @@ class Config {
 		}
 
 		UpdateState(config);
+		Save(api);
 	}
 
 	private static void UpdateState(JsonObject config) {
@@ -77,7 +79,36 @@ class Config {
 		BackCommandPerm = config["BackCommandPerm"].AsString(BackCommandPerm);
 	}
 
-	private void Save(ICoreAPI api) {
-		api.StoreModConfig(this, "vstweaks.json");
+	private static void Save(ICoreAPI api) {
+		// Not a fan of this but not in the mood of fiddling with classes.
+		var dto = new {
+			Version,
+
+			EnableZoom,
+			MaxZoom,
+			ZoomLerp,
+
+			EnableSticksFromFirewoodRecipe,
+
+			EnableNewChatMessageSound,
+			ChatMessageSoundVolume,
+
+			EnableFeedback,
+
+			EnableSort,
+			EnableSetSpawnOnSleep,
+			EnableWaypointTeleport,
+			EnableWaypointShare,
+
+			EnableTPPCommand,
+			EnableHomeCommand,
+
+			WaypointTeleportPerm,
+			TPPCommandPerm,
+			HomeCommandPerm,
+			BackCommandPerm,
+		};
+
+		api.StoreModConfig(dto, "vstweaks.json");
 	}
 }
