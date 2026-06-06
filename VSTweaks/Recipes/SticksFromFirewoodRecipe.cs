@@ -18,6 +18,6 @@ sealed class SticksFromFirewoodRecipe : GridRecipe {
 		Ingredients = new Dictionary<string, CraftingRecipeIngredient> { { "T", saw }, { "F", firewood } };
 		Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = "game:stick", Quantity = 3 };
 
-		ResolveIngredients(world);
+		Resolve(world, "vstweaks");
 	}
 }
